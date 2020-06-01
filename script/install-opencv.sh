@@ -7,8 +7,8 @@ cvVersion="master"
 mkdir -p ~/libs/opencv
 
 # Clean build directories
-rm -rf ~/libs/opencv/build
-rm -rf ~/libs/opencv_contrib/build
+rm -rf ~/libs/opencv
+rm -rf ~/libs/opencv_contrib
 
 # Create directory for installation
 mkdir ~/installation
@@ -61,6 +61,7 @@ cd ~/libs/opencv_contrib || exit
 git checkout $cvVersion
 cd ..
 
+mkdir -p ~/libs/opencv/build/
 cd ~/libs/opencv/build || exit
 
 
