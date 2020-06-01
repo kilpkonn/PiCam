@@ -4,6 +4,8 @@ echo "Installing OpenCV"
 # Define OpenCV Version to install
 cvVersion="master"
 
+mkdir -p ~/libs/opencv
+
 # Clean build directories
 rm -rf ~/libs/opencv/build
 rm -rf ~/libs/opencv_contrib/build
