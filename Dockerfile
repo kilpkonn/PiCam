@@ -1,4 +1,6 @@
-FROM miguelbarroeprosima/raspfarm:base
+FROM debian:buster
+
+ENV DEBIAN_FRONTEND noninteractive
 
 VOLUME /export
 

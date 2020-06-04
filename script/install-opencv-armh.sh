@@ -1,35 +1,47 @@
 #!/bin/bash
-
-apt-get update && apt-get upgrade -y
-apt-get install -y apt-utils
+apt update && apt upgrade -y
+apt install -y apt-utils
 
 # Enable armh for x86 machines
 dpkg --add-architecture armhf
 dpkg --print-foreign-architectures
-apt-get update && apt-get install -y qemu-user-static
 
+# add-apt-repository universe
+# sed -i 's/deb/deb [arch=i386,amd64]/g' /etc/apt/sources.list
+# echo "deb [arch=armhf] http://ports.ubuntu.com/ trusty main universe" >> /etc/apt/sources.list
+# echo "deb-src [arch=armhf] http://ports.ubuntu.com/ trusty main universe" >> /etc/apt/sources.list
+
+# cat /etc/apt/sources.list
+
+apt update && apt install -y qemu-user-static
 
 
 # Python libs
-apt-get install -y python3-dev python3-numpy python-dev python-numpy
-apt-get install -y libpython2-dev:armhf
-apt-get install -y libpython3-dev:armhf
+apt install -y python3-dev
+apt install -y python3-numpy
+apt install -y python-dev
+apt install -y python-numpy
+
+apt install -y libpython2-dev:armhf
+apt install -y libpython3-dev:armhf
 
 # GUI libs, can be ignored for headless
-apt-get install -y libgtk-3-dev:armhf libcanberra-gtk3-dev:armhf
+apt install -y libgtk-3-dev:armhf libcanberra-gtk3-dev:armhf
 
 # OpenCV libs
-apt-get install -y libtiff-dev:armhf zlib1g-dev:armhf
-apt-get install -y libjpeg-dev:armhf libpng-dev:armhf
-apt-get install -y libavcodec-dev:armhf libavformat-dev:armhf libswscale-dev:armhf libv4l-dev:armhf
+apt install -y libtiff-dev:armhf zlib1g-dev:armhf
+apt install -y libjpeg-dev:armhf libpng-dev:armhf
+apt install -y libavcodec-dev:armhf libavformat-dev:armhf libswscale-dev:armhf libv4l-dev:armhf
 apt-get install -y libxvidcore-dev:armhf libx264-dev:armhf
 
 # Cross compilers
-apt-get install -y crossbuild-essential-armhf
-apt-get install -y gfortran-arm-linux-gnueabihf
+apt install -y crossbuild-essential-armhf
+apt install -y gfortran-arm-linux-gnueabihf
 
 # Tools (Cmake, git, pkg-config, wget)
-apt-get install -y cmake git pkg-config wget
+apt install -y cmake git pkg-config wget
+
+apt-get install -f
 
 # Download OpenCV
 cd /
@@ -52,7 +64,7 @@ mkdir build && cd build || exit
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D CMAKE_INSTALL_PREFIX=/opt/opencv-4.3.0 \
         -D CMAKE_TOOLCHAIN_FILE=../platforms/linux/arm-gnueabi.toolchain.cmake \
-        -D OPENCV_EXTRA_MODULES_PATH=~/opencv_all/opencv_contrib-4.3.0/modules \
+        -D OPENCV_EXTRA_MODULES_PATH=/opencv_all/opencv_contrib-4.3.0/modules \
         -D OPENCV_ENABLE_NONFREE=ON \
         -D ENABLE_NEON=ON \
         -D ENABLE_VFPV3=ON \
@@ -67,6 +79,8 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D BUILD_OPENCV_PYTHON2=ON \
         -D BUILD_OPENCV_PYTHON3=ON \
         -D BUILD_EXAMPLES=OFF ..
+
+cat /opencv_all/opencv-4.3.0/build/CMakeFiles/CMakeError.log
 
 # Build
 make -j16
