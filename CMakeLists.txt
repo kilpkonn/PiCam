@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Where to find CMake modules and OpenCV
-SET(OpenCV_DIR ~/installation/OpenCV-master/lib/cmake/opencv4)
+SET(OpenCV_DIR /opt/opencv-4.3.0/lib/cmake/opencv4)
 # set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 

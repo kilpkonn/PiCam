@@ -80,7 +80,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
         -D BUILD_OPENCV_PYTHON3=ON \
         -D BUILD_EXAMPLES=OFF ..
 
-cat /opencv_all/opencv-4.3.0/build/CMakeFiles/CMakeError.log
+# cat /opencv_all/opencv-4.3.0/build/CMakeFiles/CMakeError.log
 
 # Build
 make -j16
@@ -88,7 +88,7 @@ make -j16
 #Install
 make install/strip
 
-# Fic lib names for armh
+# Fix lib names for armhf
 cd /opt/opencv-4.3.0/lib/python3.7/dist-packages/cv2/python-3.7/ || exit
 cp cv2.cpython-37m-x86_64-linux-gnu.so cv2.so
 
@@ -96,3 +96,4 @@ cp cv2.cpython-37m-x86_64-linux-gnu.so cv2.so
 cd /opt || exit
 tar -cjvf /opencv-4.3.0-armhf.tar.bz2 /export/opencv-4.3.0
 cd /
+exit

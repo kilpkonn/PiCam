@@ -4,15 +4,13 @@ echo "Installing OpenCV"
 # Define OpenCV Version to install
 cvVersion="master"
 
-mkdir -p ~/libs/opencv
+mkdir -p ~/intall/opencv
 
 # Clean build directories
-rm -rf ~/libs/opencv
-rm -rf ~/libs/opencv_contrib
+rm -rf ~/install/opencv
+rm -rf ~/install/opencv_contrib
 
-# Create directory for installation
-mkdir ~/installation
-mkdir ~/installation/OpenCV-"$cvVersion"
+rm -rf /opt/opencv-4.3.0
 
 sudo apt update && sudo apt upgrade
 
@@ -34,7 +32,7 @@ sudo apt -y install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-d
 sudo apt -y install libxine2-dev libv4l-dev
 cd /usr/include/linux || exit
 sudo ln -s -f ../libv4l1-videodev.h videodev.h
-cd ~/libs || exit
+cd ~/install || exit
 
 sudo apt -y install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 sudo apt -y install libgtk2.0-dev libtbb-dev qt5-default
@@ -57,24 +55,29 @@ git checkout $cvVersion
 cd ..
 
 git clone https://github.com/opencv/opencv_contrib.git
-cd ~/libs/opencv_contrib || exit
+cd ~/install/opencv_contrib || exit
 git checkout $cvVersion
 cd ..
 
-mkdir -p ~/libs/opencv/build/
-cd ~/libs/opencv/build || exit
-
+mkdir -p ~/install/opencv/build/
+cd ~/install/opencv/build || exit
 
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
-            -D CMAKE_INSTALL_PREFIX=~/installation/OpenCV-"$cvVersion" \
-            -D INSTALL_C_EXAMPLES=ON \
-            -D INSTALL_PYTHON_EXAMPLES=ON \
-            -D WITH_TBB=ON \
-            -D WITH_V4L=ON \
-            -D OPENCV_PYTHON3_INSTALL_PATH=~/OpenCV-$cvVersion-py3/lib/python3.5/site-packages \
-        -D WITH_QT=ON \
-        -D WITH_OPENGL=ON \
-        -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
-        -D BUILD_EXAMPLES=ON ..
+  -D CMAKE_INSTALL_PREFIX=/opt/opencv-4.3.0 \
+  -D INSTALL_C_EXAMPLES=ON \
+  -D INSTALL_PYTHON_EXAMPLES=ON \
+  -D WITH_TBB=ON \
+  -D WITH_V4L=ON \
+  -D WITH_QT=ON \
+  -D WITH_OPENGL=ON \
+  -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib/modules \
+  -D BUILD_EXAMPLES=ON ..
+  # -D OPENCV_PYTHON3_INSTALL_PATH=~/OpenCV-$cvVersion-py3/lib/python3.5/site-packages \
 
 make install
+
+echo "Done installing OpenCV!"
+
+echo "Cleaning up folders..."
+rm -rf ~/install
+echo "Done."
