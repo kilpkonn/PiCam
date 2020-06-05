@@ -93,7 +93,6 @@ cd /opt/opencv-4.3.0/lib/python3.7/dist-packages/cv2/python-3.7/ || exit
 cp cv2.cpython-37m-x86_64-linux-gnu.so cv2.so
 
 # Compress
-cd /opt || exit
-tar -cjvf /opencv-4.3.0-armhf.tar.bz2 /export/opencv-4.3.0
 cd /
+tar -cjvf /export/opencv-4.3.0-armhf.tar.bz2 /opt/opencv-4.3.0
 exit
