@@ -4,7 +4,7 @@ echo "Installing OpenCV"
 # Define OpenCV Version to install
 cvVersion="master"
 
-mkdir -p ~/intall/opencv
+mkdir -p ~/install/opencv
 
 # Clean build directories
 rm -rf ~/install/opencv
@@ -12,7 +12,7 @@ rm -rf ~/install/opencv_contrib
 
 rm -rf /opt/opencv-4.3.0
 
-sudo apt update && sudo apt upgrade
+sudo apt update && sudo apt upgrade -y
 
 sudo apt -y remove x264 libx264-dev
 
@@ -50,7 +50,7 @@ sudo apt -y install libgphoto2-dev libeigen3-dev libhdf5-dev doxygen
 
 # OpenCV
 git clone https://github.com/opencv/opencv.git
-cd ~/libs/opencv || exit
+cd ~/install/opencv || exit
 git checkout $cvVersion
 cd ..
 
@@ -63,7 +63,7 @@ mkdir -p ~/install/opencv/build/
 cd ~/install/opencv/build || exit
 
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
-  -D CMAKE_INSTALL_PREFIX=/opt/opencv-4.3.0 \
+  -D CMAKE_INSTALL_PREFIX=~/install/opencv-4.3.0 \
   -D INSTALL_C_EXAMPLES=ON \
   -D INSTALL_PYTHON_EXAMPLES=ON \
   -D WITH_TBB=ON \
@@ -75,6 +75,8 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
   # -D OPENCV_PYTHON3_INSTALL_PATH=~/OpenCV-$cvVersion-py3/lib/python3.5/site-packages \
 
 make install
+sudo chmod +x -R ~/install/opencv-4.3.0
+sudo mv ~/install/opencv-4.3.0 /opt/opencv-4.3.0
 
 echo "Done installing OpenCV!"
 

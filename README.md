@@ -8,7 +8,7 @@ git clone https://github.com/kilpkonn/PiCam.git && cd PiCam
 ```
 ### Build OpenCV binaries or development
 ```bash
-sudo bash ./script/install-opencv.sh
+./script/install-opencv.sh
 ```
 ### Build armhf binaries
 ```bash
