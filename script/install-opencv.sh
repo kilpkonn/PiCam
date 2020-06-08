@@ -77,6 +77,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 make install
 sudo chmod +x -R ~/install/opencv-4.3.0
 sudo mv ~/install/opencv-4.3.0 /opt/opencv-4.3.0
+sudo mv ./conf/opencv.conf /etc/ld.so.conf.d/opencv.conf
 
 echo "Done installing OpenCV!"
 
