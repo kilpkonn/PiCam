@@ -11,7 +11,7 @@ SET(OpenCV_DIR /opt/opencv-4.3.0/lib/cmake/opencv4)
 
 
 find_package(OpenCV REQUIRED)
-set(OpenCV_FOUND 1)
+# set(OpenCV_FOUND 1)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
 add_executable(pi_cam src/main.cpp)
