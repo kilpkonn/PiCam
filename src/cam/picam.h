@@ -3,6 +3,7 @@
 //
 
 #include <opencv2/opencv.hpp>
+#include "server/MJPEGWriter.h"
 
 #ifndef PICAM_PICAM_H
 #define PICAM_PICAM_H
@@ -20,6 +21,7 @@ private:
     int cameraIndex;
     int port;
     cv::VideoCapture cap;
+    MJPEGWriter mjpegWriter;
 };
 
 
