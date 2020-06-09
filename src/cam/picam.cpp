@@ -6,7 +6,7 @@
 
 bool PiCam::run() {
     cv::Mat frame;
-    cap.open(0);
+    std::cout << cap.getBackendName() << std:: endl;
     if (!cap.isOpened()) {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
@@ -28,8 +28,7 @@ bool PiCam::run() {
 PiCam::PiCam(const int& cameraIndex, const int& port) {
     this->cameraIndex = cameraIndex;
     this->port = port;
-    this->cap = cv::VideoCapture(cameraIndex);
-    std::cout << cameraIndex << std::endl;
+    cap = cv::VideoCapture(0);
 
     mjpegWriter = MJPEGWriter(port);
 }
