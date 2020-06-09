@@ -6,6 +6,8 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "cam/server/MJPEGWriter.h"
+
 int main(int argc, char** argv) {
     std::cout << "Starting PiCam..." << std::endl;
 
@@ -27,5 +29,6 @@ int main(int argc, char** argv) {
         std::cout << content << std::endl;
     }
     return 0;
+
 }
 

@@ -14,7 +14,11 @@ find_package(OpenCV REQUIRED)
 # set(OpenCV_FOUND 1)
 include_directories(${OpenCV_INCLUDE_DIRS})
 
-add_executable(pi_cam src/main.cpp src/cam/picam.cpp src/cam/picam.h)
+file(GLOB SOURCE_FILES
+        src/*.h
+        src/*.cpp
+        )
+add_executable(pi_cam ${SOURCE_FILES})
 
 # add libs you need
 set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs)
