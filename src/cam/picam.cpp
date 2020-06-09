@@ -11,26 +11,24 @@ bool PiCam::run() {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
     }
-    mjpegWriter.write(frame);
+    this->mjpegWriter.write(frame);
     //frame.release();
-    mjpegWriter.start();
+    this->mjpegWriter.start();
 
     while (this->cap.isOpened()) {
         this->cap >> frame;
-        mjpegWriter.write(frame);
+        this->mjpegWriter.write(frame);
         //frame.release();
     }
-    mjpegWriter.stop();
+    this->mjpegWriter.stop();
 
     return false;
 }
 
-PiCam::PiCam(const int& cameraIndex, const int& port) {
-    this->cameraIndex = cameraIndex;
-    this->port = port;
-    this->cap = cv::VideoCapture(cameraIndex);
-
-    mjpegWriter = MJPEGWriter(port);
-}
+PiCam::PiCam(const int &cameraIndex, const int &port) :
+        cameraIndex(cameraIndex),
+        port(port),
+        cap(cameraIndex),
+        mjpegWriter(port) {}
 
 PiCam::~PiCam() = default;
