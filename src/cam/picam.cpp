@@ -6,7 +6,7 @@
 
 bool PiCam::run() {
     cv::Mat frame;
-
+    cap.open(cameraIndex);
     if (!cap.isOpened()) {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
