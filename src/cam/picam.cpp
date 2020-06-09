@@ -7,20 +7,23 @@
 bool PiCam::run() {
     cv::Mat frame;
     // cap = cv::VideoCapture(0)
-    if (!this->cap.isOpened()) {
+    if (!cap.isOpened()) {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
+    } else {
+        cap.set(CAP_PROP_FRAME_WIDTH, 1920);
+        cap.set(CAP_PROP_FRAME_HEIGHT, 1080);
     }
-    this->mjpegWriter.write(frame);
+    mjpegWriter.write(frame);
     //frame.release();
-    this->mjpegWriter.start();
+    mjpegWriter.start();
 
-    while (this->cap.isOpened()) {
-        this->cap >> frame;
-        this->mjpegWriter.write(frame);
+    while (cap.isOpened()) {
+        cap >> frame;
+        mjpegWriter.write(frame);
         //frame.release();
     }
-    this->mjpegWriter.stop();
+    mjpegWriter.stop();
 
     return false;
 }
