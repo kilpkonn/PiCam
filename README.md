@@ -2,6 +2,8 @@
 
 ## How to run
 
+
+
 ## Clone
 ```bash
 git clone https://github.com/kilpkonn/PiCam.git && cd PiCam
@@ -23,6 +25,7 @@ scp -r build pi@picam.local:~/
 ssh pi@picam.local
 sudo bash ~/build/pi-setup.sh
 ```
+_Note that you might have to enable Raspberry's cam as well using `raspi-config`_
 ### Cleanup after reboot
 ```bash
 sudo rm -rf ~/build
