@@ -11,8 +11,8 @@ bool PiCam::run() {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
     } else {
-        //cap.set(CAP_PROP_FRAME_WIDTH, frameWidth);
-        //cap.set(CAP_PROP_FRAME_HEIGHT, frameHeight);
+        cap.set(CAP_PROP_FRAME_WIDTH, frameWidth);
+        cap.set(CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
     mjpegWriter.write(frame);
     //frame.release();
@@ -21,7 +21,7 @@ bool PiCam::run() {
     while (cap.isOpened()) {
         cap >> frame;
 
-        cv::cvtColor(frame, frame, COLOR_BGR2RGB);
+        //cv::cvtColor(frame, frame, COLOR_BGR2RGB);
         detectAndDraw(frame);
         mjpegWriter.write(frame);
         //frame.release();
