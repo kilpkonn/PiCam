@@ -11,8 +11,8 @@ bool PiCam::run() {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
     } else {
-        cap.set(CAP_PROP_FRAME_WIDTH, frameWidth);
-        cap.set(CAP_PROP_FRAME_HEIGHT, frameHeight);
+        //cap.set(CAP_PROP_FRAME_WIDTH, frameWidth);
+        //cap.set(CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
     mjpegWriter.write(frame);
     //frame.release();
@@ -65,7 +65,7 @@ void PiCam::detectAndDraw(Mat &img) {
         if (0.75 < aspect_ratio && aspect_ratio < 1.3) {
             center.x = cvRound((r.x + r.width * 0.5) / fx);
             center.y = cvRound((r.y + r.height * 0.5) / fy);
-            radius = cvRound((r.width + r.height) * 0.125  / (fx + fy));
+            radius = cvRound((r.width + r.height) * 0.125 / (fx + fy));
             cv::circle(img, center, radius, color, 3, 8, 0);
         } else
             cv::rectangle(img,
@@ -84,7 +84,9 @@ PiCam::PiCam(const int &cameraIndex, const int &port) :
         port(port),
         cap(cameraIndex),
         mjpegWriter(port) {
-    faceClassifier.load("./data/haarcascades/haarcascade_frontalcatface.xml");
+    if (!faceClassifier.load("./data/haarcascades/haarcascade_frontalcatface.xml")) {
+        std::cout << "Unable to load classifier data!" << std::endl;
+    }
 }
 
 
