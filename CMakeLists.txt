@@ -24,7 +24,7 @@ file(GLOB SOURCE_FILES
 add_executable(pi_cam ${SOURCE_FILES})
 
 # add libs you need
-set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs)
+set(OpenCV_LIBS opencv_core opencv_imgproc opencv_highgui opencv_imgcodecs opencv_objdetect)
 
 # linking
 target_link_libraries(pi_cam ${OpenCV_LIBS})

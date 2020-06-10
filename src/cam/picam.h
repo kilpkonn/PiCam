@@ -3,6 +3,9 @@
 //
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/objdetect.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include "server/MJPEGWriter.h"
 
 #ifndef PICAM_PICAM_H
@@ -15,13 +18,19 @@ public:
 
     bool run();
 
+    void detectAndDraw(cv::Mat &img);
+
     virtual ~PiCam();
 
 private:
     int cameraIndex;
     int port;
+    double frameHeight = 1080;
+    double frameWidth = 1920;
+    double scale = 1;
     cv::VideoCapture cap;
     MJPEGWriter mjpegWriter;
+    cv::CascadeClassifier faceClassifier;
 };
 
 
