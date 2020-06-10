@@ -20,6 +20,8 @@ bool PiCam::run() {
 
     while (cap.isOpened()) {
         cap >> frame;
+
+        cv::cvtColor(frame, frame, COLOR_BGR2RGB);
         detectAndDraw(frame);
         mjpegWriter.write(frame);
         //frame.release();
