@@ -37,8 +37,9 @@ void PiCam::detectAndDraw(Mat &img) {
     cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
 
     // Resize
-    double fx = 1 / scale;
-    cv::resize(gray, smallImg, Size(), fx, fx, INTER_LINEAR);
+    double fx = faceRecognitionFrameWidth / frameWidth;
+    double fy = faceRecognitionFrameHeight / frameHeight;
+    cv::resize(gray, smallImg, Size(), fx, fy, INTER_LINEAR);
     cv::equalizeHist(smallImg, smallImg);
 
     // Detect faces of different sizes using cascade classifier
@@ -60,14 +61,14 @@ void PiCam::detectAndDraw(Mat &img) {
 
         double aspect_ratio = (double) r.width / r.height;
         if (0.75 < aspect_ratio && aspect_ratio < 1.3) {
-            center.x = cvRound((r.x + r.width * 0.5) * scale);
-            center.y = cvRound((r.y + r.height * 0.5) * scale);
-            radius = cvRound((r.width + r.height) * 0.25 * scale);
+            center.x = cvRound((r.x + r.width * 0.5) / fx);
+            center.y = cvRound((r.y + r.height * 0.5) / fy);
+            radius = cvRound((r.width + r.height) * 0.125  / (fx + fy));
             cv::circle(img, center, radius, color, 3, 8, 0);
         } else
             cv::rectangle(img,
-                          cv::Point(cvRound(r.x * scale), cvRound(r.y * scale)),
-                          cv::Point(cvRound((r.x + r.width - 1) * scale), cvRound((r.y + r.height - 1) * scale)),
+                          cv::Point(cvRound(r.x / fx), cvRound(r.y / fy)),
+                          cv::Point(cvRound((r.x + r.width - 1) / fx), cvRound((r.y + r.height - 1) / fy)),
                           color,
                           3,
                           8,

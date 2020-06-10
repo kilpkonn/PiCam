@@ -27,7 +27,8 @@ private:
     int port;
     double frameHeight = 1080;
     double frameWidth = 1920;
-    double scale = 1;
+    int faceRecognitionFrameHeight = 54;
+    int faceRecognitionFrameWidth = 96;
     cv::VideoCapture cap;
     MJPEGWriter mjpegWriter;
     cv::CascadeClassifier faceClassifier;
