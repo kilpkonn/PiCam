@@ -46,7 +46,7 @@ void MJPEGWriter::Listener()
                     pthread_mutex_lock(&mutex_cout);
                     cout << "new client " << client << endl;
                     char headers[4096] = "\0";
-                    int readBytes = _read(client, headers);
+                    //int readBytes = _read(client, headers);
                     cout << headers;
                     pthread_mutex_unlock(&mutex_cout);
                     pthread_mutex_lock(&mutex_client);
@@ -123,7 +123,7 @@ void MJPEGWriter::ClientWrite(clientFrame & cf)
         if (it != clients.end())
         {
             cerr << "kill client " << cf.client << endl;
-            clients.erase(std::remove(clients.begin(), clients.end(), cf.client));
+            clients.erase(std::remove(clients.begin(), clients.end(), cf.client), clients.end());
             ::shutdown(cf.client, 2);
         }
     }

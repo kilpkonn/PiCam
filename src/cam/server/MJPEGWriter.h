@@ -3,19 +3,17 @@
  */
 
 #include <unistd.h>
-#include <sys/time.h>
+#include <ctime>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/signal.h>
+#include <csignal>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#define PORT        unsigned short
+
 #define SOCKET    int
-#define HOSTENT  struct hostent
 #define SOCKADDR    struct sockaddr
 #define SOCKADDR_IN  struct sockaddr_in
-#define ADDRPOINTER  unsigned int*
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR   -1
 #define TIMEOUT_M       200000
@@ -23,25 +21,25 @@
 
 #include <pthread.h>
 #include <iostream>
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "opencv2/opencv.hpp"
 
 using namespace cv;
 using namespace std;
 
 struct clientFrame {
-    uchar* outbuf;
+    uchar *outbuf;
     int outlen;
     int client;
 };
 
 struct clientPayload {
-    void* context;
+    void *context;
     clientFrame cf;
 };
 
-class MJPEGWriter{
+class MJPEGWriter {
     SOCKET sock;
     fd_set master;
     int timeout;
@@ -54,64 +52,56 @@ class MJPEGWriter{
     Mat lastFrame;
     int port;
 
-    int _write(int sock, char *s, int len)
-    {
+    int _write(int sock, char *s, int len) {
         if (len < 1) { len = strlen(s); }
         {
-            try
-            {
+            try {
                 int retval = ::send(sock, s, len, 0x4000);
                 return retval;
             }
-            catch (int e)
-            {
+            catch (int e) {
                 cout << "An exception occurred. Exception Nr. " << e << '\n';
             }
         }
         return -1;
     }
 
-    int _read(int socket, char* buffer)
-    {
+    /*int _read(int socket, char *buffer) {
         int result;
         result = recv(socket, buffer, 4096, MSG_PEEK);
-        if (result < 0 )
-        {
+        if (result < 0) {
             cout << "An exception occurred. Exception Nr. " << result << '\n';
             return result;
         }
         string s = buffer;
-        buffer = (char*) s.substr(0, (int) result).c_str();
+        buffer = (char *) s.substr(0, (int) result).c_str();
         return result;
-    }
+    }*/
 
-    static void* listen_Helper(void* context)
-    {
-        ((MJPEGWriter *)context)->Listener();
+    static void *listen_Helper(void *context) {
+        ((MJPEGWriter *) context)->Listener();
         return nullptr;
     }
 
-    static void* writer_Helper(void* context)
-    {
-        ((MJPEGWriter *)context)->Writer();
+    static void *writer_Helper(void *context) {
+        ((MJPEGWriter *) context)->Writer();
         return nullptr;
     }
 
-    static void* clientWrite_Helper(void* payload)
-    {
-        void* ctx = ((clientPayload *)payload)->context;
-        struct clientFrame cf = ((clientPayload *)payload)->cf;
-        ((MJPEGWriter *)ctx)->ClientWrite(cf);
+    static void *clientWrite_Helper(void *payload) {
+        void *ctx = ((clientPayload *) payload)->context;
+        struct clientFrame cf = ((clientPayload *) payload)->cf;
+        ((MJPEGWriter *) ctx)->ClientWrite(cf);
         return nullptr;
     }
 
 public:
 
-    MJPEGWriter(int port = 0)
-            : sock(INVALID_SOCKET)
-            , timeout(TIMEOUT_M)
-            , quality(90)
-            , port(port)
+    MJPEGWriter(int port = 0):
+    sock(INVALID_SOCKET),
+    timeout(TIMEOUT_M),
+    quality(90),
+    port(port)
     {
         signal(SIGPIPE, SIG_IGN);
         FD_ZERO(&master);
@@ -119,34 +109,29 @@ public:
         //     open(port);
     }
 
-    ~MJPEGWriter()
-    {
+    ~MJPEGWriter() {
         release();
     }
 
-    bool release()
-    {
+    bool release() {
         if (sock != INVALID_SOCKET)
             shutdown(sock, 2);
         sock = (INVALID_SOCKET);
         return false;
     }
 
-    bool open()
-    {
+    bool open() {
         sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
         SOCKADDR_IN address;
         address.sin_addr.s_addr = INADDR_ANY;
         address.sin_family = AF_INET;
         address.sin_port = htons(port);
-        if (::bind(sock, (SOCKADDR*)&address, sizeof(SOCKADDR_IN)) == SOCKET_ERROR)
-        {
+        if (::bind(sock, (SOCKADDR *) &address, sizeof(SOCKADDR_IN)) == SOCKET_ERROR) {
             cerr << "error : couldn't bind sock " << sock << " to port " << port << "!" << endl;
             return release();
         }
-        if (listen(sock, NUM_CONNECTIONS) == SOCKET_ERROR)
-        {
+        if (listen(sock, NUM_CONNECTIONS) == SOCKET_ERROR) {
             cerr << "error : couldn't listen on sock " << sock << " on port " << port << " !" << endl;
             return release();
         }
@@ -154,26 +139,25 @@ public:
         return true;
     }
 
-    bool isOpened()
-    {
+    bool isOpened() {
         return sock != INVALID_SOCKET;
     }
 
-    void start(){
+    void start() {
         pthread_mutex_lock(&mutex_writer);
-        pthread_create(&thread_listen, nullptr, this->listen_Helper, this);
-        pthread_create(&thread_write, nullptr, this->writer_Helper, this);
+        pthread_create(&thread_listen, nullptr, MJPEGWriter::listen_Helper, this);
+        pthread_create(&thread_write, nullptr, MJPEGWriter::writer_Helper, this);
     }
 
-    void stop(){
+    void stop() {
         this->release();
         pthread_join(thread_listen, nullptr);
         pthread_join(thread_write, nullptr);
     }
 
-    void write(const Mat& frame){
+    void write(const Mat &frame) {
         pthread_mutex_lock(&mutex_writer);
-        if(!frame.empty()){
+        if (!frame.empty()) {
             lastFrame.release();
             lastFrame = frame.clone();
         }
@@ -182,6 +166,8 @@ public:
 
 private:
     void Listener();
+
     void Writer();
+
     void ClientWrite(clientFrame &cf);
 };

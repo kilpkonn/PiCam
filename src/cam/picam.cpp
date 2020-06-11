@@ -11,8 +11,8 @@ bool PiCam::run() {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
     } else {
-        cap.set(CAP_PROP_FRAME_WIDTH, frameWidth);
-        cap.set(CAP_PROP_FRAME_HEIGHT, frameHeight);
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
     mjpegWriter.write(frame);
     //frame.release();
@@ -41,7 +41,7 @@ void PiCam::detectAndDraw(Mat &img) {
     // Resize
     double fx = faceRecognitionFrameWidth / frameWidth;
     double fy = faceRecognitionFrameHeight / frameHeight;
-    cv::resize(gray, smallImg, Size(), fx, fy, INTER_LINEAR);
+    cv::resize(gray, smallImg, Size(), fx, fy, cv::INTER_LINEAR);
     cv::equalizeHist(smallImg, smallImg);
 
     // Detect faces of different sizes using cascade classifier
