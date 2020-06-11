@@ -67,6 +67,10 @@ void MJPEGWriter::Writer()
     const int milis2wait = 16666;
     while (this->isOpened())
     {
+        if (lastFrame == nullptr) {
+            usleep(milis2wait);
+            continue;
+        }
         pthread_mutex_lock(&mutex_client);
         int num_connected_clients = clients.size();
         pthread_mutex_unlock(&mutex_client);
@@ -82,7 +86,7 @@ void MJPEGWriter::Writer()
         params.push_back(IMWRITE_JPEG_QUALITY); // CV_IMWRITE_JPEG_QUALITY?
         params.push_back(quality);
         pthread_mutex_lock(&mutex_writer);
-        imencode(".jpg", lastFrame, outbuf, params);
+        imencode(".jpg", *lastFrame, outbuf, params);
         pthread_mutex_unlock(&mutex_writer);
         int outlen = outbuf.size();
 

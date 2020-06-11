@@ -14,20 +14,18 @@ bool PiCam::run() {
         cap.set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
-    mjpegWriter.write(frame);
-    //frame.release();
-    mjpegWriter.start();
 
     while (cap.isOpened()) {
         cap >> frame;
 
         //cv::cvtColor(frame, frame, COLOR_BGR2RGB);
         detectAndDraw(frame);
-        mjpegWriter.write(frame);
+
+        if (mjpegWriter != nullptr) {
+            mjpegWriter->write(frame);
+        }
         //frame.release();
     }
-    mjpegWriter.stop();
-
     return false;
 }
 
@@ -82,12 +80,31 @@ void PiCam::detectAndDraw(Mat &img) {
 PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
-        cap(cameraIndex),
-        mjpegWriter(port) {
+        cap(cameraIndex) {
     if (!faceClassifier.load("./data/haarcascades/haarcascade_frontalcatface.xml")) {
         std::cout << "Unable to load classifier data!" << std::endl;
     }
 }
 
+bool PiCam::startServer() {
+    std::cout << "Starting server at port: " << port << std::endl;
+    mjpegWriter = new MJPEGWriter(port);
+    mjpegWriter->start();
+    std::cout << "Server is up!" << std::endl;
+    return true;
+}
 
-PiCam::~PiCam() = default;
+bool PiCam::stopServer() {
+    std::cout << "Stopping server..." << std::endl;
+    if (isServerRunning) {
+        mjpegWriter->stop();
+        delete mjpegWriter;
+    }
+    std::cout << "Server shut down!" << std::endl;
+    return true;
+}
+
+
+PiCam::~PiCam() {
+    stopServer();
+}
