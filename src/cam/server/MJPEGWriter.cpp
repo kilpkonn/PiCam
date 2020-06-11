@@ -81,14 +81,14 @@ void MJPEGWriter::Writer()
         pthread_t threads[NUM_CONNECTIONS];
         int count = 0;
 
-        std::vector<uchar> outbuf;
+        std::vector<uchar> outBuffer;
         std::vector<int> params;
         params.push_back(IMWRITE_JPEG_QUALITY); // CV_IMWRITE_JPEG_QUALITY?
         params.push_back(quality);
         pthread_mutex_lock(&mutex_writer);
-        imencode(".jpg", *lastFrame, outbuf, params);
+        imencode(".jpg", *lastFrame, outBuffer, params);
         pthread_mutex_unlock(&mutex_writer);
-        int outlen = outbuf.size();
+        int outLen = outBuffer.size();
 
         pthread_mutex_lock(&mutex_client);
         auto begin = clients.begin();
@@ -99,9 +99,9 @@ void MJPEGWriter::Writer()
         {
             if (count > NUM_CONNECTIONS)
                 break;
-            auto *cp = new clientPayload({ (MJPEGWriter*)this, { outbuf.data(), outlen, *it } });
+            auto *cp = new clientPayload({ (MJPEGWriter*)this, {outBuffer.data(), outLen, *it } });
             payloads.push_back(cp);
-            pthread_create(&threads[count], nullptr, &MJPEGWriter::clientWrite_Helper, cp);
+            pthread_create(&threads[count], nullptr, &MJPEGWriter::clientWriteHelper, cp);
         }
         for (; count > 0; count--)
         {
@@ -127,7 +127,7 @@ void MJPEGWriter::ClientWrite(clientFrame & cf)
         if (it != clients.end())
         {
             cerr << "kill client " << cf.client << endl;
-            clients.erase(std::remove(clients.begin(), clients.end(), cf.client), clients.end());
+            clients.erase(std::remove(clients.begin(), clients.end(), cf.client));
             ::shutdown(cf.client, 2);
         }
     }

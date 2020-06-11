@@ -16,9 +16,9 @@ class PiCam {
 public:
     explicit PiCam(const int& cameraIndex = 0, const int& port = 8080);
 
-    bool startServer();
+    void startServer();
 
-    bool stopServer();
+    void stopServer();
 
     bool run();
 
@@ -29,16 +29,19 @@ public:
 private:
     int cameraIndex;
     int port;
-    double frameHeight = 720; // 1080;
-    double frameWidth = 1280; //1920;
+
     int faceRecognitionFrameHeight = 54;
     int faceRecognitionFrameWidth = 96;
+
+    double frameHeight = 720; // 1080;
+    double frameWidth = 1280; //1920;
 
     bool isServerRunning = false;
 
     cv::VideoCapture cap;
-    MJPEGWriter* mjpegWriter = nullptr;
     cv::CascadeClassifier faceClassifier;
+
+    MJPEGWriter* mjpegWriter = nullptr;
 };
 
 

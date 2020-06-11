@@ -86,22 +86,23 @@ PiCam::PiCam(const int &cameraIndex, const int &port) :
     }
 }
 
-bool PiCam::startServer() {
+void PiCam::startServer() {
     std::cout << "Starting server at port: " << port << std::endl;
     mjpegWriter = new MJPEGWriter(port);
     mjpegWriter->start();
+    isServerRunning = true;
     std::cout << "Server is up!" << std::endl;
-    return true;
 }
 
-bool PiCam::stopServer() {
+void PiCam::stopServer() {
     std::cout << "Stopping server..." << std::endl;
     if (isServerRunning) {
         mjpegWriter->stop();
         delete mjpegWriter;
+        mjpegWriter = nullptr;
+        isServerRunning = false;
     }
     std::cout << "Server shut down!" << std::endl;
-    return true;
 }
 
 

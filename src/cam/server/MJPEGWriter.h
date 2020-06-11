@@ -49,10 +49,10 @@ class MJPEGWriter {
     pthread_mutex_t mutex_client = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t mutex_cout = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t mutex_writer = PTHREAD_MUTEX_INITIALIZER;
-    Mat* lastFrame;
+    Mat* lastFrame = nullptr;
     int port;
 
-    int _write(int sock, char *s, int len) {
+    static int _write(int sock, char *s, int len) {
         if (len < 1) { len = strlen(s); }
         {
             try {
@@ -78,17 +78,17 @@ class MJPEGWriter {
         return result;
     }*/
 
-    static void *listen_Helper(void *context) {
+    static void *listenHelper(void *context) {
         ((MJPEGWriter *) context)->Listener();
         return nullptr;
     }
 
-    static void *writer_Helper(void *context) {
+    static void *writerHelper(void *context) {
         ((MJPEGWriter *) context)->Writer();
         return nullptr;
     }
 
-    static void *clientWrite_Helper(void *payload) {
+    static void *clientWriteHelper(void *payload) {
         void *ctx = ((clientPayload *) payload)->context;
         struct clientFrame cf = ((clientPayload *) payload)->cf;
         ((MJPEGWriter *) ctx)->ClientWrite(cf);
@@ -96,8 +96,7 @@ class MJPEGWriter {
     }
 
 public:
-
-    MJPEGWriter(int port = 0):
+    explicit MJPEGWriter(int port = 0):
     sock(INVALID_SOCKET),
     timeout(TIMEOUT_M),
     quality(90),
@@ -146,8 +145,8 @@ public:
 
     void start() {
         pthread_mutex_lock(&mutex_writer);
-        pthread_create(&thread_listen, nullptr, MJPEGWriter::listen_Helper, this);
-        pthread_create(&thread_write, nullptr, MJPEGWriter::writer_Helper, this);
+        pthread_create(&thread_listen, nullptr, MJPEGWriter::listenHelper, this);
+        pthread_create(&thread_write, nullptr, MJPEGWriter::writerHelper, this);
     }
 
     void stop() {
@@ -159,7 +158,7 @@ public:
     void write(const Mat &frame) {
         pthread_mutex_lock(&mutex_writer);
         if (!frame.empty()) {
-            lastFrame->release();
+            // lastFrame->release();
             delete lastFrame;
             auto tmp = frame.clone();
             lastFrame = &tmp;
