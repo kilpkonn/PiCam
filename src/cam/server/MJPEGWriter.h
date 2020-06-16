@@ -49,7 +49,7 @@ class MJPEGWriter {
     pthread_mutex_t mutex_client = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t mutex_cout = PTHREAD_MUTEX_INITIALIZER;
     pthread_mutex_t mutex_writer = PTHREAD_MUTEX_INITIALIZER;
-    Mat* lastFrame = nullptr;
+    Mat lastFrame;
     int port;
 
     static int _write(int sock, char *s, int len) {
@@ -96,12 +96,11 @@ class MJPEGWriter {
     }
 
 public:
-    explicit MJPEGWriter(int port = 0):
-    sock(INVALID_SOCKET),
-    timeout(TIMEOUT_M),
-    quality(90),
-    port(port)
-    {
+    explicit MJPEGWriter(int port = 0) :
+            sock(INVALID_SOCKET),
+            timeout(TIMEOUT_M),
+            quality(90),
+            port(port) {
         signal(SIGPIPE, SIG_IGN);
         FD_ZERO(&master);
         // if (port)
@@ -110,7 +109,6 @@ public:
 
     ~MJPEGWriter() {
         release();
-        delete lastFrame;
     }
 
     bool release() {
@@ -158,10 +156,7 @@ public:
     void write(const Mat &frame) {
         pthread_mutex_lock(&mutex_writer);
         if (!frame.empty()) {
-            // lastFrame->release();
-            delete lastFrame;
-            auto tmp = frame.clone();
-            lastFrame = &tmp;
+            lastFrame = frame.clone();
         }
         pthread_mutex_unlock(&mutex_writer);
     }
