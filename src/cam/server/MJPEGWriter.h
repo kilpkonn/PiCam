@@ -148,9 +148,11 @@ public:
     }
 
     void stop() {
+        std::cout << "Stopping server..." << std::endl;
         this->release();
         pthread_join(thread_listen, nullptr);
         pthread_join(thread_write, nullptr);
+        std::cout << "Server shut down!" << std::endl;
     }
 
     void write(const Mat &frame) {

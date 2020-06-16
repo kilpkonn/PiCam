@@ -63,7 +63,7 @@ void PiCam::detectAndDraw(Mat &img) {
         if (0.75 < aspect_ratio && aspect_ratio < 1.3) {
             center.x = cvRound((r.x + r.width * 0.5) / fx);
             center.y = cvRound((r.y + r.height * 0.5) / fy);
-            radius = cvRound((r.width + r.height) * 0.125 / (fx + fy));
+            radius = cvRound((r.width + r.height) * 0.25 / (fx + fy));
             cv::circle(img, center, radius, color, 3, 8, 0);
         } else
             cv::rectangle(img,
