@@ -61,7 +61,7 @@ void MJPEGWriter::Writer() {
     pthread_mutex_unlock(&mutex_writer);
     const int milis2wait = 16666;
     while (isOpened()) {
-        if (!lastFrame.empty()) {
+        if (lastFrame.empty()) {
             usleep(milis2wait);
             continue;
         }
