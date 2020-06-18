@@ -159,7 +159,7 @@ public:
         pthread_mutex_lock(&mutex_writer);
         if (!frame.empty()) {
             lastFrame.release();
-            std::cout << "Cloning frame" << std::endl;
+            std::cout << &lastFrame << std::endl;
             lastFrame = frame.clone();
         }
         pthread_mutex_unlock(&mutex_writer);

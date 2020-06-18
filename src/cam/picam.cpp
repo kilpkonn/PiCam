@@ -22,7 +22,6 @@ bool PiCam::run() {
         detectAndDraw(frame);
 
         if (mjpegWriter != nullptr) {
-            std::cout << "Writing frame" << std::endl;
             mjpegWriter->write(frame);
         }
         //frame.release();
