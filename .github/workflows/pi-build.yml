@@ -16,8 +16,8 @@ jobs:
     needs: clean
     runs-on: self-hosted
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      # Checkout
+      - uses: actions/checkout@v2
       #   id: hello
       - name: Build
         run: |
