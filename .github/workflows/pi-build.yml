@@ -23,3 +23,9 @@ jobs:
         run: |
           mkdir build && cd build
           cmake .. && make
+      - name: Update PiCam
+        run: |
+          rm -rf /home/pi/picam
+          mkdir /home/pi/picam
+          cp ./build/pi_cam /home/pi/picam
+          cp -R ./data /home/pi/picam
