@@ -62,7 +62,9 @@ void PiCam::detectAndDraw(Mat &img) {
             );
 
     // Draw circles around the faces
-    faces.insert(faces.end(), flippedFaces.begin(), flippedFaces.end());
+    for (const auto &f: flippedFaces) {
+        faces.push_back(Rect_<double>(faceRecognitionFrameWidth - f.x, f.y, f.width, f.height));
+    }
 
     for (const auto &r : faces) {
         std::cout << "Face" << std::endl;
