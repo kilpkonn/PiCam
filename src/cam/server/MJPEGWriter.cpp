@@ -42,7 +42,8 @@ void MJPEGWriter::Listener() {
                     pthread_mutex_lock(&mutex_cout);
                     cout << "new client " << client << endl;
                     char headers[4096] = "\0";
-                    int readBytes = _read(client, headers);
+                    // int readBytes =
+                    _read(client, headers);
                     cout << headers;
                     pthread_mutex_unlock(&mutex_cout);
                     pthread_mutex_lock(&mutex_client);

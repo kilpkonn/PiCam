@@ -41,6 +41,7 @@ void PiCam::detectAndDraw(Mat &img) {
     double fy = faceRecognitionFrameHeight / frameHeight;
     cv::resize(gray, smallImg, Size(), fx, fy, cv::INTER_LINEAR);
     cv::equalizeHist(smallImg, smallImg);
+    cv::equalizeHist(smallImg, img);
 
     // Detect faces of different sizes using cascade classifier
     faceClassifier.detectMultiScale(
@@ -53,8 +54,9 @@ void PiCam::detectAndDraw(Mat &img) {
 
     // Draw circles around the faces
     for (const auto &r : faces) {
-        cv::Mat smallImgROI;
-        std::vector<cv::Rect> nestedObjects;
+        std::cout << "Face" << std::endl;
+        //cv::Mat smallImgROI;
+        // std::vector<cv::Rect> nestedObjects;
         cv::Point center;
         cv::Scalar color = cv::Scalar(255, 0, 0); // Color for Drawing tool
         int radius;
