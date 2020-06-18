@@ -30,8 +30,8 @@ bool PiCam::run() {
 }
 
 void PiCam::detectAndDraw(Mat &img) {
-    std::vector<Rect> faces, faces2;
-    cv::Mat gray, smallImg;
+    std::vector<Rect> faces, flippedFaces;
+    cv::Mat gray, smallImg, flippedSmallImg;
 
     // Convert to grayscale
     cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
@@ -41,6 +41,7 @@ void PiCam::detectAndDraw(Mat &img) {
     double fy = faceRecognitionFrameHeight / frameHeight;
     cv::resize(gray, smallImg, Size(), fx, fy, cv::INTER_LINEAR);
     cv::equalizeHist(smallImg, smallImg);
+    cv::flip(smallImg, flippedSmallImg, 1);
 
     // Detect faces of different sizes using cascade classifier
     faceClassifier.detectMultiScale(
@@ -49,9 +50,20 @@ void PiCam::detectAndDraw(Mat &img) {
             1.1,
             2,
             (uint) 0 | CASCADE_SCALE_IMAGE,
-            Size(10, 10));
+            Size(10, 10)
+            );
+
+    faceClassifier.detectMultiScale(
+            flippedSmallImg,
+            flippedFaces,
+            1.1,
+            2, (uint) 0 | CASCADE_SCALE_IMAGE,
+            Size(10, 10)
+            );
 
     // Draw circles around the faces
+    faces.insert(faces.end(), flippedFaces.begin(), flippedFaces.end());
+
     for (const auto &r : faces) {
         std::cout << "Face" << std::endl;
         cv::Point center;
