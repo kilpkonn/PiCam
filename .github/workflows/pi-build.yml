@@ -1,0 +1,25 @@
+name: Build on raspberry
+
+# This workflow is triggered on pushes to the repository.
+on: [push]
+
+jobs:
+  # clean:
+  #   name: Clean
+  #   runs-on: self-hosted
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+
+  build:
+    name: Build
+    needs: clean
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      #   id: hello
+      - name: Build
+        run: |
+          mkdir build && cd build
+          cmake .. && make

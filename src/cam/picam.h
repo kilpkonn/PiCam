@@ -24,7 +24,7 @@ public:
 
     void detectAndDraw(cv::Mat &img);
 
-    virtual ~PiCam();
+    ~PiCam();
 
 private:
     int cameraIndex;
