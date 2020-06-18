@@ -30,8 +30,8 @@ private:
     int cameraIndex;
     int port;
 
-    int faceRecognitionFrameHeight = 54 * 2;
-    int faceRecognitionFrameWidth = 96 * 2;
+    int faceRecognitionFrameHeight = 54 * 5;
+    int faceRecognitionFrameWidth = 96 * 5;
 
     double frameHeight = 720; // 1080;
     double frameWidth = 1280; //1920;
