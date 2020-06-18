@@ -66,7 +66,7 @@ class MJPEGWriter {
         return -1;
     }
 
-    /*int _read(int socket, char *buffer) {
+    int _read(int socket, char *buffer) {
         int result;
         result = recv(socket, buffer, 4096, MSG_PEEK);
         if (result < 0) {
@@ -76,7 +76,7 @@ class MJPEGWriter {
         string s = buffer;
         buffer = (char *) s.substr(0, (int) result).c_str();
         return result;
-    }*/
+    }
 
     static void *listenHelper(void *context) {
         ((MJPEGWriter *) context)->Listener();
