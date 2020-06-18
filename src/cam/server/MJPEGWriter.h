@@ -158,6 +158,7 @@ public:
     void write(const Mat &frame) {
         pthread_mutex_lock(&mutex_writer);
         if (!frame.empty()) {
+            std::cout << 1 << std::endl;
             lastFrame = frame.clone();
         }
         pthread_mutex_unlock(&mutex_writer);
