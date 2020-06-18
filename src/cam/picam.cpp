@@ -49,7 +49,7 @@ void PiCam::detectAndDraw(Mat &img) {
             1.1,
             2,
             (uint) 0 | CASCADE_SCALE_IMAGE,
-            Size(20, 20));
+            Size(10, 10));
 
     // Draw circles around the faces
     for (const auto &r : faces) {
