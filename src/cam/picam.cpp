@@ -80,7 +80,7 @@ PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
         cap(cameraIndex) {
-    if (!faceClassifier.load("./data/haarcascades/haarcascade_frontalcatface.xml")) {
+    if (!faceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
         std::cout << "Unable to load classifier data!" << std::endl;
     }
 }
