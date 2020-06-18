@@ -13,7 +13,7 @@ jobs:
 
   build:
     name: Build
-    needs: clean
+    # needs: clean
     runs-on: self-hosted
     steps:
       # Checkout
