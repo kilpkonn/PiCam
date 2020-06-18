@@ -39,7 +39,8 @@ private:
     bool isServerRunning = false;
 
     cv::VideoCapture cap;
-    cv::CascadeClassifier faceClassifier;
+    cv::CascadeClassifier profileFaceClassifier;
+    cv::CascadeClassifier frontalFaceClassifier;
 
     MJPEGWriter* mjpegWriter = nullptr;
 };

@@ -30,7 +30,7 @@ bool PiCam::run() {
 }
 
 void PiCam::detectAndDraw(Mat &img) {
-    std::vector<Rect> faces, flippedFaces;
+    std::vector<Rect> faces, profileFaces, flippedProfileFaces;
     cv::Mat gray, smallImg, flippedSmallImg;
 
     // Convert to grayscale
@@ -44,32 +44,35 @@ void PiCam::detectAndDraw(Mat &img) {
     cv::flip(smallImg, flippedSmallImg, 1);
 
     // Detect faces of different sizes using cascade classifier
-    faceClassifier.detectMultiScale(
+    frontalFaceClassifier.detectMultiScale(
             smallImg,
             faces,
             1.1,
             2,
             (uint) 0 | CASCADE_SCALE_IMAGE,
             Size(10, 10)
-            );
+    );
 
-    faceClassifier.detectMultiScale(
+    profileFaceClassifier.detectMultiScale(
+            smallImg,
+            profileFaces,
+            1.1,
+            2,
+            (uint) 0 | CASCADE_SCALE_IMAGE,
+            Size(10, 10)
+    );
+
+    profileFaceClassifier.detectMultiScale(
             flippedSmallImg,
-            flippedFaces,
+            flippedProfileFaces,
             1.1,
             2, (uint) 0 | CASCADE_SCALE_IMAGE,
             Size(10, 10)
-            );
-
-    // Draw circles around the faces
-    for (const auto &f: flippedFaces) {
-        faces.push_back(Rect_<double>(faceRecognitionFrameWidth - f.x, f.y, f.width, f.height));
-    }
+    );
 
     for (const auto &r : faces) {
-        std::cout << "Face" << std::endl;
         cv::Point center;
-        cv::Scalar color = cv::Scalar(255, 0, 0); // Color for Drawing tool
+        cv::Scalar color = cv::Scalar(0, 0, 255); // Color for Drawing tool
         int radius;
 
         double aspect_ratio = (double) r.width / r.height;
@@ -88,14 +91,36 @@ void PiCam::detectAndDraw(Mat &img) {
                           0);
 
     }
+
+    // Draw circles around the profileFaces
+    for (const auto &f: flippedProfileFaces) {
+        profileFaces.push_back(Rect_<double>(faceRecognitionFrameWidth - f.x - f.width, f.y, f.width, f.height));
+    }
+
+    for (const auto &r : profileFaces) {
+        cv::Scalar color = cv::Scalar(255, 0, 0); // Color for Drawing tool
+
+        cv::rectangle(img,
+                      cv::Point(cvRound(r.x / fx), cvRound(r.y / fy)),
+                      cv::Point(cvRound((r.x + r.width - 1) / fx), cvRound((r.y + r.height - 1) / fy)),
+                      color,
+                      3,
+                      8,
+                      0
+                      );
+
+    }
 }
 
 PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
         cap(cameraIndex) {
-    if (!faceClassifier.load("./data/haarcascades/haarcascade_profileface.xml")) {
-        std::cout << "Unable to load classifier data!" << std::endl;
+    if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
+        std::cout << "Unable to load classifier data for frontal face!" << std::endl;
+    }
+    if (!profileFaceClassifier.load("./data/haarcascades/haarcascade_profileface.xml")) {
+        std::cout << "Unable to load classifier data for profile face!" << std::endl;
     }
 }
 
