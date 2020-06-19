@@ -38,7 +38,7 @@ void PiCam::detectAndDraw(Mat &img) {
         int radius;
 
         double aspect_ratio = (double) r.bounds.width / r.bounds.height;
-        if (0.75 < aspect_ratio && aspect_ratio < 1.3) {
+        if (0.75 < aspect_ratio && aspect_ratio < 1.3 && false) {
             center.x = cvRound((r.bounds.x + r.bounds.width * 0.5));
             center.y = cvRound((r.bounds.y + r.bounds.height * 0.5));
             radius = cvRound((r.bounds.width + r.bounds.height) * 0.75);

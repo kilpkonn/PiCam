@@ -72,10 +72,20 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
         faces.emplace_back(cv::Rect(r.x / fx, r.y / fy, r.width / fx, r.height / fy), false);
     }
 
+    std::vector<cv::Rect> toMerge;
+    toMerge.reserve(faces.size());
+
+    std::transform(faces.begin(), faces.end(), std::back_inserter(toMerge), [](const Face& f) { return f.bounds; });
+
     frameBufferIndexPointer = (frameBufferIndexPointer + 1) % FRAME_BUFFER_LENGTH;
     frameBuffer[frameBufferIndexPointer] = Frame(faces);
 
     // TODO: Merge rectangles, some more statistics etc.
+    cv::groupRectangles(toMerge, 1, 0.05);
+
+    faces.clear();
+
+    std::transform(toMerge.begin(), toMerge.end(), std::back_inserter(faces), [](const cv::Rect& r) { return Face(r, true); });
 
     return faces;
 }
