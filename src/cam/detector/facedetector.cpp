@@ -81,7 +81,7 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
     frameBuffer[frameBufferIndexPointer] = Frame(faces);
 
     // TODO: Merge rectangles, some more statistics etc.
-    cv::groupRectangles(toMerge, 0, 0.2);
+    cv::groupRectangles(toMerge, 0, 0.05);
 
     faces.clear();
 
