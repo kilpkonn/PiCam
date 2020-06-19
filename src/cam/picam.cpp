@@ -30,84 +30,27 @@ bool PiCam::run() {
 }
 
 void PiCam::detectAndDraw(Mat &img) {
-    std::vector<Rect> faces, profileFaces, flippedProfileFaces;
-    cv::Mat gray, smallImg, flippedSmallImg;
-
-    // Convert to grayscale
-    cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-
-    // Resize
-    double fx = faceRecognitionFrameWidth / frameWidth;
-    double fy = faceRecognitionFrameHeight / frameHeight;
-    cv::resize(gray, smallImg, Size(), fx, fy, cv::INTER_LINEAR);
-    cv::equalizeHist(smallImg, smallImg);
-    cv::flip(smallImg, flippedSmallImg, 1);
-
-    // Detect faces of different sizes using cascade classifier
-    frontalFaceClassifier.detectMultiScale(
-            smallImg,
-            faces,
-            1.1,
-            2,
-            (uint) 0 | CASCADE_SCALE_IMAGE,
-            Size(10, 10)
-    );
-
-    profileFaceClassifier.detectMultiScale(
-            smallImg,
-            profileFaces,
-            1.1,
-            2,
-            (uint) 0 | CASCADE_SCALE_IMAGE,
-            Size(10, 10)
-    );
-
-    profileFaceClassifier.detectMultiScale(
-            flippedSmallImg,
-            flippedProfileFaces,
-            1.1,
-            2, (uint) 0 | CASCADE_SCALE_IMAGE,
-            Size(10, 10)
-    );
+    std::vector<Face> faces = faceDetector.detectFaces(img);
 
     for (const auto &r : faces) {
         cv::Point center;
         cv::Scalar color = cv::Scalar(0, 0, 255); // Color for Drawing tool
         int radius;
 
-        double aspect_ratio = (double) r.width / r.height;
+        double aspect_ratio = (double) r.bounds.width / r.bounds.height;
         if (0.75 < aspect_ratio && aspect_ratio < 1.3) {
-            center.x = cvRound((r.x + r.width * 0.5) / fx);
-            center.y = cvRound((r.y + r.height * 0.5) / fy);
-            radius = cvRound((r.width + r.height) * 0.75 / (fx + fy));
+            center.x = cvRound((r.bounds.x + r.bounds.width * 0.5));
+            center.y = cvRound((r.bounds.y + r.bounds.height * 0.5));
+            radius = cvRound((r.bounds.width + r.bounds.height) * 0.75);
             cv::circle(img, center, radius, color, 3, 8, 0);
         } else
             cv::rectangle(img,
-                          cv::Point(cvRound(r.x / fx), cvRound(r.y / fy)),
-                          cv::Point(cvRound((r.x + r.width - 1) / fx), cvRound((r.y + r.height - 1) / fy)),
+                          cv::Point(cvRound(r.bounds.x), cvRound(r.bounds.y)),
+                          cv::Point(cvRound((r.bounds.x + r.bounds.width - 1)), cvRound((r.bounds.y + r.bounds.height - 1))),
                           color,
                           3,
                           8,
                           0);
-
-    }
-
-    // Draw circles around the profileFaces
-    for (const auto &f: flippedProfileFaces) {
-        profileFaces.push_back(Rect_<double>(faceRecognitionFrameWidth - f.x - f.width, f.y, f.width, f.height));
-    }
-
-    for (const auto &r : profileFaces) {
-        cv::Scalar color = cv::Scalar(255, 0, 0); // Color for Drawing tool
-
-        cv::rectangle(img,
-                      cv::Point(cvRound(r.x / fx), cvRound(r.y / fy)),
-                      cv::Point(cvRound((r.x + r.width - 1) / fx), cvRound((r.y + r.height - 1) / fy)),
-                      color,
-                      3,
-                      8,
-                      0
-                      );
 
     }
 }
@@ -115,13 +58,8 @@ void PiCam::detectAndDraw(Mat &img) {
 PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
-        cap(cameraIndex) {
-    if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
-        std::cout << "Unable to load classifier data for frontal face!" << std::endl;
-    }
-    if (!profileFaceClassifier.load("./data/haarcascades/haarcascade_profileface.xml")) {
-        std::cout << "Unable to load classifier data for profile face!" << std::endl;
-    }
+        cap(cameraIndex),
+        faceDetector(frameWidth, frameHeight) {
 }
 
 void PiCam::startServer() {

@@ -29,7 +29,7 @@ public:
 
     std::vector<Face> detectFaces(const cv::Mat& frame);
 
-    FaceDetector(double frameHeight, double frameWidth);
+    FaceDetector(double frameWidth, double frameHeight);
 
     ~FaceDetector();
 

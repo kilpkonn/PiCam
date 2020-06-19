@@ -6,9 +6,9 @@
 
 #include <utility>
 
-FaceDetector::FaceDetector(double frameHeight, double frameWidth) :
-        frameHeight(frameHeight),
-        frameWidth(frameWidth) {
+FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
+        frameWidth(frameWidth),
+        frameHeight(frameHeight) {
     if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
         std::cout << "Unable to load classifier data for frontal face!" << std::endl;
     }
@@ -61,15 +61,15 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
     );
 
     for (const auto &r : frontalFaces) {
-        faces.emplace_back(r, true);
+        faces.emplace_back(cv::Rect(r.x / fx, r.y / fy, r.width / fx, r.height / fy), true);
     }
 
     for (const auto &r: flippedProfileFaces) {
-        faces.emplace_back(cv::Rect(faceRecognitionFrameWidth - r.x - r.width, r.y, r.width, r.height), false);
+        faces.emplace_back(cv::Rect((faceRecognitionFrameWidth - r.x - r.width) / fx, r.y / fy, r.width / fx, r.height / fy), false);
     }
 
     for (const auto &r : profileFaces) {
-        faces.emplace_back(r, false);
+        faces.emplace_back(cv::Rect(r.x / fx, r.y / fy, r.width / fx, r.height / fy), false);
     }
 
     frameBufferIndexPointer = (frameBufferIndexPointer + 1) % FRAME_BUFFER_LENGTH;
