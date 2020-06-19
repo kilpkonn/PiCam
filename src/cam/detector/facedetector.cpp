@@ -104,8 +104,10 @@ std::vector<Face> FaceDetector::predictFaces() {
 
     for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
         const Frame& frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
+        std::cout << frame.faces.size() << std::endl;
 
         for (const auto & face : frame.faces) {
+            bool isMerged = false;
             for (auto & predictedFace : predictedFaces) {
                 if ((predictedFace.bounds & face.bounds).area() > std::min(predictedFace.bounds.area(), face.bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
                     // Weighted towards never
@@ -116,7 +118,11 @@ std::vector<Face> FaceDetector::predictFaces() {
                             std::max(predictedFace.bounds.width, face.bounds.width),
                             std::max(predictedFace.bounds.height, face.bounds.height)
                             );
+                    isMerged = true;
                 }
+            }
+            if (!isMerged) {
+                predictedFaces.push_back(face);
             }
         }
 
