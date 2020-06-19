@@ -19,7 +19,8 @@ struct Face {
 struct Frame {
     std::vector<Face> faces;
 
-    Frame(std::vector<Face> faces);
+    Frame() = default;
+    explicit Frame(std::vector<Face> faces);
 };
 
 

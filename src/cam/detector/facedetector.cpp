@@ -72,7 +72,8 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
         faces.emplace_back(r, false);
     }
 
-    frameBuffer[frameBufferIndexPointer++] = Frame(faces);
+    frameBufferIndexPointer = (frameBufferIndexPointer + 1) % FRAME_BUFFER_LENGTH;
+    frameBuffer[frameBufferIndexPointer] = Frame(faces);
 
     // TODO: Merge rectangles, some more statistics etc.
 
