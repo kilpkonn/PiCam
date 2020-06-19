@@ -34,6 +34,9 @@ public:
     ~FaceDetector();
 
 private:
+
+    static std::vector<Face> mergeOverlapped(std::vector<Face>& faces);
+
     cv::CascadeClassifier profileFaceClassifier;
     cv::CascadeClassifier frontalFaceClassifier;
     Frame frameBuffer[FRAME_BUFFER_LENGTH];

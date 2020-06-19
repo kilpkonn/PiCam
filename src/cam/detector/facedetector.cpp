@@ -6,6 +6,8 @@
 
 #include <utility>
 
+#define MERGE_OVERLAPPING_AMOUNT 0.6
+
 FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {
@@ -81,12 +83,26 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
     frameBuffer[frameBufferIndexPointer] = Frame(faces);
 
     // TODO: Merge rectangles, some more statistics etc.
-    cv::groupRectangles(toMerge, 0, 0.05);
+    mergeOverlapped(faces);
 
-    faces.clear();
+    return faces;
+}
 
-    std::transform(toMerge.begin(), toMerge.end(), std::back_inserter(faces), [](const cv::Rect& r) { return Face(r, true); });
-
+std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
+    int i = 0;
+    while (i < faces.size()) {
+        for (int j = i; j < faces.size(); j++) {
+            if ((faces[i].bounds & faces[j].bounds).area() > std::min(faces[i].bounds.area(), faces[j].bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
+                faces[i].bounds = cv::Rect(
+                        std::round((faces[i].bounds.x + faces[j].bounds.x) / 2),
+                        std::round((faces[i].bounds.y + faces[j].bounds.y) / 2),
+                        std::max(faces[i].bounds.width, faces[j].bounds.width),
+                        std::max(faces[i].bounds.height, faces[j].bounds.height)
+                        );
+                faces.erase(faces.begin() + j);
+            }
+        }
+    }
     return faces;
 }
 
