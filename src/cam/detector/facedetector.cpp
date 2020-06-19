@@ -101,7 +101,8 @@ std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
 
 std::vector<Face> FaceDetector::predictFaces() {
     std::vector<Face> predictedFaces;
-
+    std::cout << "Ptr " << frameBufferIndexPointer << std::endl;
+    std::cout << "Last " << frameBufferIndexPointer + FRAME_BUFFER_LENGTH << std::endl;
     for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
         const Frame& frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
         std::cout << frame.faces.size() << std::endl;
@@ -113,8 +114,8 @@ std::vector<Face> FaceDetector::predictFaces() {
                     // Weighted towards never
                     // TODO: Calculate lateral velocity etc.
                     predictedFace.bounds = cv::Rect(
-                            std::round((predictedFace.bounds.x * 2 + face.bounds.x) / 3),
-                            std::round((predictedFace.bounds.y * 2 + face.bounds.y) / 3),
+                            std::round((predictedFace.bounds.x * 3 + face.bounds.x) / 4),
+                            std::round((predictedFace.bounds.y * 3 + face.bounds.y) / 4),
                             std::max(predictedFace.bounds.width, face.bounds.width),
                             std::max(predictedFace.bounds.height, face.bounds.height)
                             );

@@ -4,7 +4,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#define FRAME_BUFFER_LENGTH 5
+#define FRAME_BUFFER_LENGTH 7
 
 #ifndef PICAM_FACEDETECTOR_H
 #define PICAM_FACEDETECTOR_H
