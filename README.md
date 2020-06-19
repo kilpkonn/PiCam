@@ -1,5 +1,5 @@
 # PiCam
-
+![](https://github.com/kilpkonn/PiCam/workflows/Build%20on%20raspberry/badge.svg)
 ## How to run
 
 
