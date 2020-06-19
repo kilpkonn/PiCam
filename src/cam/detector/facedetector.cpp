@@ -6,7 +6,7 @@
 
 #include <utility>
 
-#define MERGE_OVERLAPPING_AMOUNT 0.6
+#define MERGE_OVERLAPPING_AMOUNT 0.4
 
 FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
         frameWidth(frameWidth),
@@ -101,11 +101,8 @@ std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
 
 std::vector<Face> FaceDetector::predictFaces() {
     std::vector<Face> predictedFaces;
-    std::cout << "Ptr " << frameBufferIndexPointer << std::endl;
-    std::cout << "Last " << frameBufferIndexPointer + FRAME_BUFFER_LENGTH << std::endl;
     for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
         const Frame& frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
-        std::cout << frame.faces.size() << std::endl;
 
         for (const auto & face : frame.faces) {
             bool isMerged = false;
