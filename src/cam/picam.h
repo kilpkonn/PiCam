@@ -23,7 +23,7 @@ public:
 
     bool run();
 
-    void detectAndDraw(cv::Mat &img);
+    void draw(cv::Mat &img);
 
     ~PiCam();
 

@@ -29,6 +29,8 @@ public:
 
     std::vector<Face> detectFaces(const cv::Mat& frame);
 
+    std::vector<Face> predictFaces();
+
     FaceDetector(double frameWidth, double frameHeight);
 
     ~FaceDetector();

@@ -19,7 +19,8 @@ bool PiCam::run() {
         cap >> frame;
 
         //cv::cvtColor(frame, frame, COLOR_BGR2RGB);
-        detectAndDraw(frame);
+        faceDetector.detectFaces(frame);
+        draw(frame);
 
         if (mjpegWriter != nullptr) {
             mjpegWriter->write(frame);
@@ -29,8 +30,8 @@ bool PiCam::run() {
     return false;
 }
 
-void PiCam::detectAndDraw(Mat &img) {
-    std::vector<Face> faces = faceDetector.detectFaces(img);
+void PiCam::draw(Mat &img) {
+    std::vector<Face> faces = faceDetector.predictFaces();
 
     for (const auto &r : faces) {
         cv::Point center;
