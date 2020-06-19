@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 
 project(PiCam)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -pthread")
 
 # Where to find CMake modules and OpenCV
 SET(OpenCV_DIR /opt/opencv-4.3.0/lib/cmake/opencv4)
@@ -20,6 +20,8 @@ file(GLOB SOURCE_FILES
         src/cam/*.h
         src/cam/server/*.h
         src/cam/server/*.cpp
+        src/cam/detector/*.h
+        src/cam/detector/*.cpp
         )
 add_executable(pi_cam ${SOURCE_FILES})
 
