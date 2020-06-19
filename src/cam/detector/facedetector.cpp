@@ -91,7 +91,7 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
 std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
     int i = 0;
     while (i < faces.size()) {
-        for (int j = i; j < faces.size(); j++) {
+        for (int j = i + 1; j < faces.size(); j++) {
             if ((faces[i].bounds & faces[j].bounds).area() > std::min(faces[i].bounds.area(), faces[j].bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
                 faces[i].bounds = cv::Rect(
                         std::round((faces[i].bounds.x + faces[j].bounds.x) / 2),
