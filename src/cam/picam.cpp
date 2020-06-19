@@ -20,6 +20,7 @@ bool PiCam::run() {
 
         //cv::cvtColor(frame, frame, COLOR_BGR2RGB);
         faceDetector.detectFaces(frame);
+        std::cout << "Loop" << std::endl;
         draw(frame);
 
         if (mjpegWriter != nullptr) {
@@ -31,6 +32,7 @@ bool PiCam::run() {
 }
 
 void PiCam::draw(Mat &img) {
+    std::cout << "Draw" << std::endl;
     std::vector<Face> faces = faceDetector.predictFaces();
 
     for (const auto &r : faces) {
