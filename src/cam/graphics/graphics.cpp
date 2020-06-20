@@ -26,11 +26,11 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     }
 
     cv::GaussianBlur(mask, mask, cv::Size(7, 7), 5);
-    //cv::resize(mask, mask, cv::Size(img.cols, img.rows)); // <- OpenCV fucked up x and y?
+    cv::resize(mask, mask, cv::Size(img.cols, img.rows)); // <- OpenCV fucked up x and y?
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
 
-    return mask;
+    return blended;
 }
 
 void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Mat &mask, cv::Mat &blended) {
