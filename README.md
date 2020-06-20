@@ -18,7 +18,7 @@ sudo bash ./script build-in-docker.sh
 ```
 ### Copy build armhf binaries to Raspberry
 ```bash
-scp -r build pi@picam.local:~/
+scp -r build-armhf pi@picam.local:~/
 ```
 ### Run install script on Raspberry
 ```bash
