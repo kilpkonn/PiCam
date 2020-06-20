@@ -8,6 +8,7 @@
 #include <opencv2/imgproc.hpp>
 #include "server/MJPEGWriter.h"
 #include "detector/facedetector.h"
+#include "graphics//graphics.h"
 
 #ifndef PICAM_PICAM_H
 #define PICAM_PICAM_H
