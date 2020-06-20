@@ -4,7 +4,7 @@
 
 #include "graphics.h"
 
-#define GAUSSIAN_STEP 5
+#define GAUSSIAN_STEP 10
 
 cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights) {
     cv::Mat grayscale;
@@ -26,7 +26,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     }
 
     cv::GaussianBlur(mask, mask, cv::Size(7, 7), 0);
-    cv::resize(mask, mask, cv::Size(img.rows, img.cols));
+    cv::resize(mask, mask, cv::Size(img.cols, img.rows)); // <- OpenCV fucked up x and y?
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
 
