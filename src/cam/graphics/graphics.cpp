@@ -24,9 +24,10 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     std::cout << "Blur" << std::endl;
     cv::GaussianBlur(mask, mask, cv::Size(21, 21), 11);
     std::cout << "Blend" << std::endl;
-    alphaBlend(img, grayscale, mask, grayscale);
+    cv::Mat blended;
+    alphaBlend(img, grayscale, mask, blended);
 
-    return grayscale;
+    return blended;
 }
 
 void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Mat &mask, cv::Mat &blended) {
