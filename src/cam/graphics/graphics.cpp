@@ -26,7 +26,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
 
-    return grayscale;
+    return img;
 }
 
 void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Mat &mask, cv::Mat &blended) {
