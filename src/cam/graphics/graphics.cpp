@@ -25,7 +25,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
                 );
     }
 
-    cv::GaussianBlur(mask, mask, cv::Size(7, 7), 0);
+    cv::GaussianBlur(mask, mask, cv::Size(7, 7), 5, 0, cv::BORDER_TRANSPARENT);
     cv::resize(mask, mask, cv::Size(img.cols, img.rows)); // <- OpenCV fucked up x and y?
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
