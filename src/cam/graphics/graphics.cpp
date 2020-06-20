@@ -6,7 +6,7 @@
 
 cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights) {
     cv::Mat grayscale;
-    cv::Mat mask(img.rows, img.cols, CV_8UC1);
+    cv::Mat mask = cv::Mat::zeros(img.rows, img.cols, CV_8UC1);
     cv::cvtColor(img, grayscale, cv::COLOR_BGR2GRAY);
     cv::cvtColor(grayscale, grayscale, cv::COLOR_GRAY2BGR);
 
@@ -19,8 +19,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
                 cv::Point(rect.x + rect.width - 1, rect.y + rect.height - 1),
                 cv::Scalar(0, 0, 0),
                 cv::FILLED,
-                cv::LINE_8,
-                0
+                cv::LINE_8
                 );
     }
 
@@ -28,7 +27,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
 
-    return 255 - mask;
+    return mask;
 }
 
 void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Mat &mask, cv::Mat &blended) {
