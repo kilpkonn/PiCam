@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 
 #define FRAME_BUFFER_LENGTH 7
+#define MERGE_OVERLAPPING_AMOUNT 0.4
 
 #ifndef PICAM_FACEDETECTOR_H
 #define PICAM_FACEDETECTOR_H

@@ -6,8 +6,6 @@
 
 #include <utility>
 
-#define MERGE_OVERLAPPING_AMOUNT 0.4
-
 FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {

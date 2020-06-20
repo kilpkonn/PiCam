@@ -22,6 +22,8 @@ file(GLOB SOURCE_FILES
         src/cam/server/*.cpp
         src/cam/detector/*.h
         src/cam/detector/*.cpp
+        src/cam/graphics/*.h
+        src/cam/graphics/*.cpp
         )
 add_executable(pi_cam ${SOURCE_FILES})
 
