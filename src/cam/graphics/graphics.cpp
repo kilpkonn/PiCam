@@ -27,14 +27,14 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     cv::Mat blended;
     alphaBlend(img, grayscale, 255 - mask, blended);
 
-    return 255 - mask;
+    return blended;
 }
 
 void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Mat &mask, cv::Mat &blended) {
     blended = cv::Mat(img1.rows, img1.cols, img1.type());
     for (int y = 0; y < blended.rows; y++) {
         for (int x = 0; x < blended.cols; x++) {
-            float alpha = (float) mask.at<unsigned char>(y, x) / 255;
+            float alpha = (float) mask.at<unsigned char>(y, x) / 255.0f;
             blended.at<cv::Vec3b>(y, x) = alpha * img1.at<cv::Vec3b>(y, x) + (1 - alpha) * img2.at<cv::Vec3b>(y, x);
         }
     }
