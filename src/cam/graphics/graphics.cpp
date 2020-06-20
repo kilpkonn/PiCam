@@ -17,12 +17,13 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
                 cv::Point(rect.x + rect.width - 1, rect.y + rect.height - 1),
                 cv::Scalar(0, 0, 0),
                 cv::FILLED,
-                cv::FILLED,
+                cv::LINE_8,
                 0
                 );
     }
-
+    std::cout << "Blur" << std::endl;
     cv::GaussianBlur(mask, mask, cv::Size(21, 21), 11);
+    std::cout << "Blend" << std::endl;
     alphaBlend(img, grayscale, mask, grayscale);
 
     return grayscale;
