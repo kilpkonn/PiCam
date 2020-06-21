@@ -6,7 +6,7 @@
 
 #define GAUSSIAN_STEP 10
 
-cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights) {
+cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights, const int& radius) {
     cv::Mat grayscale;
     cv::Mat mask = cv::Mat::zeros(img.rows / GAUSSIAN_STEP, img.cols / GAUSSIAN_STEP, CV_8UC1);
     cv::cvtColor(img, grayscale, cv::COLOR_BGR2GRAY);
@@ -17,8 +17,8 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     for (const cv::Rect& rect : highlights) {
         cv::rectangle(
                 mask,
-                cv::Point(rect.x / GAUSSIAN_STEP, rect.y / GAUSSIAN_STEP),
-                cv::Point((rect.x + rect.width) / GAUSSIAN_STEP - 1, (rect.y + rect.height) / GAUSSIAN_STEP - 1),
+                cv::Point( (rect.x - radius) / GAUSSIAN_STEP , (rect.y - radius) / GAUSSIAN_STEP),
+                cv::Point((rect.x + rect.width + radius) / GAUSSIAN_STEP - 1 , (rect.y + rect.height + radius) / GAUSSIAN_STEP - 1),
                 cv::Scalar(255, 255, 255),
                 cv::FILLED,
                 cv::LINE_8
