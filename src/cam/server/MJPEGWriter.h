@@ -107,7 +107,7 @@ public:
         //     open(port);
     }
 
-    ~MJPEGWriter() {
+    virtual ~MJPEGWriter() {
         release();
     }
 

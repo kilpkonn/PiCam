@@ -26,7 +26,7 @@ public:
 
     void draw(cv::Mat &img);
 
-    ~PiCam();
+    virtual ~PiCam();
 
 private:
     int cameraIndex;

@@ -34,7 +34,7 @@ public:
 
     FaceDetector(double frameWidth, double frameHeight);
 
-    ~FaceDetector();
+    virtual ~FaceDetector();
 
 private:
 
