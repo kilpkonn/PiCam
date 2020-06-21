@@ -32,11 +32,11 @@ bool PiCam::run() {
 
 void PiCam::draw(Mat &img) {
     std::vector<Face> faces = faceDetector.predictFaces();
-//
-//    std::vector<Rect> highlights;
-//    highlights.reserve(faces.size());
-//    std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
-//    img = Graphics::grayscaleBackground(img, highlights, 50);
+
+    std::vector<Rect> highlights;
+    highlights.reserve(faces.size());
+    std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
+    img = Graphics::blurBackground(img, highlights, 50);
 
     for (const auto &r : faces) {
         cv::Point center;

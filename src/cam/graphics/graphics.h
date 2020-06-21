@@ -21,6 +21,18 @@ public:
      */
     static cv::Mat grayscaleBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
 
+
+    /**
+     * Blur background of an image using gaussian blur whilst keeping highlights sharp.
+     * Note that gaussian blur might have effect on performance!!
+     *
+     * @param img - cv::Mat image to blur
+     * @param highlights - cv::Rect object that represent highlights, that are kept sharp
+     * @param radius - extra radius around rectangles
+     * @return new cv::Mat image with grayscale background
+     */
+    static cv::Mat blurBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
+
     /**
      * Alpha blend 2 cv::Mat images
      *
