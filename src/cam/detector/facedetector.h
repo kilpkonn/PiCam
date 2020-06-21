@@ -32,6 +32,11 @@ public:
 
     std::vector<Face> predictFaces();
 
+    void setFrameSize(const int& width, const int& height) {
+        frameWidth = width;
+        frameHeight = height;
+    }
+
     FaceDetector(double frameWidth, double frameHeight);
 
     virtual ~FaceDetector();

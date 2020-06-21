@@ -105,3 +105,14 @@ void PiCam::setBlur(const bool &blur) {
 void PiCam::setGrayscale(const bool &grayscale) {
     this->isGrayscale = grayscale;
 }
+
+void PiCam::setFrameSize(const int& width, const int& height) {
+    frameWidth = width;
+    frameHeight = height;
+    faceDetector.setFrameSize(width, height);
+
+    if (cap.isOpened()) {
+        cap.set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
+        cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
+    }
+}
