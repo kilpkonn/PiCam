@@ -26,11 +26,18 @@ public:
 
     void draw(cv::Mat &img);
 
+    void setBlur(const bool& blur);
+
+    void setGrayscale(const bool& grayscale);
+
     virtual ~PiCam();
 
 private:
     int cameraIndex;
     int port;
+
+    bool isBlur = false;
+    bool isGrayscale = false;
 
     double frameHeight = 720; // 1080;
     double frameWidth = 1280; //1920;

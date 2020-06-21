@@ -33,10 +33,16 @@ bool PiCam::run() {
 void PiCam::draw(Mat &img) {
     std::vector<Face> faces = faceDetector.predictFaces();
 
-//    std::vector<Rect> highlights;
-//    highlights.reserve(faces.size());
-//    std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
-//    img = Graphics::blurBackground(img, highlights, 50);
+    std::vector<Rect> highlights;
+    highlights.reserve(faces.size());
+    std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
+    if (isBlur) {
+        img = Graphics::blurBackground(img, highlights, 70);
+    }
+
+    if (isGrayscale) {
+        img = Graphics::grayscaleBackground(img, highlights, 50);
+    }
 
     for (const auto &r : faces) {
         cv::Point center;
@@ -90,4 +96,12 @@ void PiCam::stopServer() {
 
 PiCam::~PiCam() {
     stopServer();
+}
+
+void PiCam::setBlur(const bool &blur) {
+    this->isBlur = blur;
+}
+
+void PiCam::setGrayscale(const bool &grayscale) {
+    this->isGrayscale = grayscale;
 }
