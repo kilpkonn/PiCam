@@ -12,8 +12,6 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
     cv::cvtColor(img, grayscale, cv::COLOR_BGR2GRAY);
     cv::cvtColor(grayscale, grayscale, cv::COLOR_GRAY2BGR);
 
-    std::cout << highlights.size() << std::endl;
-
     for (const cv::Rect& rect : highlights) {
         cv::rectangle(
                 mask,
