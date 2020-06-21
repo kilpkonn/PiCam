@@ -4,6 +4,13 @@
 
 #include <opencv2/opencv.hpp>
 
+#define GAUSSIAN_STEP 10
+#define GAUSSIAN_BLUR_RADIUS 21
+#define GAUSSIAN_BLUR_SIG_X 11
+
+#define MASK_BLUR_SIZE 7
+#define MASK_SIG_X 5
+
 #ifndef PICAM_GRAPHICS_H
 #define PICAM_GRAPHICS_H
 

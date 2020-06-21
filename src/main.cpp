@@ -27,9 +27,7 @@ int main(int argc, char** argv) {
                 std::cout << "Please specify port number! Example: -p 8080" << std::endl;
                 return 1;
             }
-        }
-
-        if (arg == "-b" || arg == "--blur") {
+        } else if (arg == "-b" || arg == "--blur") {
             blur = true;
         } else if (arg == "-g" || arg == "--greyscale") {
             grayscale = true;

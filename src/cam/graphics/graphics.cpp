@@ -4,8 +4,6 @@
 
 #include "graphics.h"
 
-#define GAUSSIAN_STEP 10
-
 cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights, const int& radius) {
     cv::Mat grayscale;
     cv::Mat mask = cv::Mat::zeros(img.rows / GAUSSIAN_STEP, img.cols / GAUSSIAN_STEP, CV_8UC1);
@@ -23,7 +21,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
                 );
     }
 
-    cv::GaussianBlur(mask, mask, cv::Size(7, 7), 5);
+    cv::GaussianBlur(mask, mask, cv::Size(MASK_BLUR_SIZE, MASK_BLUR_SIZE), MASK_SIG_X);
     cv::resize(mask, mask, cv::Size(img.cols, img.rows)); // <- OpenCV fucked up x and y?
     cv::Mat blended;
     alphaBlend(img, grayscale, mask, blended);
@@ -33,7 +31,7 @@ cv::Mat Graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::
 
 cv::Mat Graphics::blurBackground(const cv::Mat &img, const std::vector<cv::Rect> &highlights, const int &radius) {
     cv::Mat blurred;
-    cv::GaussianBlur(img, blurred, cv::Size(21, 21), 11);
+    cv::GaussianBlur(img, blurred, cv::Size(GAUSSIAN_BLUR_RADIUS, GAUSSIAN_BLUR_RADIUS), GAUSSIAN_BLUR_SIG_X);
     cv::Mat mask = cv::Mat::zeros(img.rows / GAUSSIAN_STEP, img.cols / GAUSSIAN_STEP, CV_8UC1);
 
     for (const cv::Rect& rect : highlights) {
