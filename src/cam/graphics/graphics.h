@@ -10,7 +10,7 @@
 
 class Graphics {
 public:
-    static cv::Mat grayscaleBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const float& radius);
+    static cv::Mat grayscaleBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
     static void alphaBlend(const cv::Mat& img1, const cv::Mat& img2, const cv::Mat& mask, cv::Mat& blended);
 
 };
