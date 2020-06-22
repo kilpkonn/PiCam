@@ -5,8 +5,9 @@
 #include "picam.h"
 
 bool PiCam::run() {
+    faceDetector.loadClassifiers();
+
     cv::Mat frame;
-    // cap = cv::VideoCapture(0)
     if (!cap.isOpened()) {
         std::cout << "Unable to connect to camera!" << std::endl;
         return false;
@@ -25,7 +26,6 @@ bool PiCam::run() {
         if (mjpegWriter != nullptr) {
             mjpegWriter->write(frame);
         }
-        //frame.release();
     }
     return false;
 }

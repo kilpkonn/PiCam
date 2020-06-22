@@ -21,8 +21,6 @@ public:
 
     bool run();
 
-    void draw(cv::Mat &img);
-
     void setFrameSize(const int& width, const int& height);
 
     void setBlur(const bool& blur);
@@ -32,6 +30,9 @@ public:
     virtual ~PiCam();
 
 private:
+
+    void draw(cv::Mat &img);
+
     int cameraIndex;
     int port;
 

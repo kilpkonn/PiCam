@@ -113,7 +113,7 @@ public:
 
     bool release() {
         if (sock != INVALID_SOCKET)
-            shutdown(sock, 2);
+            shutdown(sock, SHUT_RDWR);
         sock = (INVALID_SOCKET);
         return false;
     }

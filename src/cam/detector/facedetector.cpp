@@ -9,12 +9,6 @@
 FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {
-    if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
-        std::cout << "Unable to load classifier data for frontal face!" << std::endl;
-    }
-    if (!profileFaceClassifier.load("./data/haarcascades/haarcascade_profileface.xml")) {
-        std::cout << "Unable to load classifier data for profile face!" << std::endl;
-    }
 }
 
 std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
@@ -125,6 +119,23 @@ std::vector<Face> FaceDetector::predictFaces() {
     }
 
     return predictedFaces;
+}
+
+bool FaceDetector::loadClassifiers() {
+    if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
+        std::cout << "Unable to load classifier data for frontal face!" << std::endl;
+        return false;
+    }
+    if (!profileFaceClassifier.load("./data/haarcascades/haarcascade_profileface.xml")) {
+        std::cout << "Unable to load classifier data for profile face!" << std::endl;
+        return false;
+    }
+    return true;
+}
+
+void FaceDetector::setFrameSize(const int &width, const int &height) {
+    this->frameWidth = width;
+    this->frameHeight = height;
 }
 
 FaceDetector::~FaceDetector() = default;

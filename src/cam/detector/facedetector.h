@@ -32,10 +32,9 @@ public:
 
     std::vector<Face> predictFaces();
 
-    void setFrameSize(const int& width, const int& height) {
-        frameWidth = width;
-        frameHeight = height;
-    }
+    bool loadClassifiers();
+
+    void setFrameSize(const int& width, const int& height);
 
     FaceDetector(double frameWidth, double frameHeight);
 
