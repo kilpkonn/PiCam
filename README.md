@@ -1,10 +1,26 @@
 # PiCam
 ![](https://github.com/kilpkonn/PiCam/workflows/Build%20on%20raspberry/badge.svg)
 ## How to run
+_Make sure you have data directory next to pi_cam executable!_
+```bash
+./pi_cam
+```
 
+### Some useful args
+ - **--port [-p]** specifies port
+ - **--height [-h]** specifies desired camera frame height
+ - **--width [-w]** specifies desired camera frame width
+ - **--blur [-b]** blurs background
+ - **--grayscale [-g]** grayscale background
+ 
+ **Example:**  
+ ```bash
+./picam --port 8090 --height 480 --width 720 -b -g 
+```
 
+## How to build
 
-## Clone
+### Clone
 ```bash
 git clone https://github.com/kilpkonn/PiCam.git && cd PiCam
 ```
