@@ -62,3 +62,19 @@ void Graphics::alphaBlend(const cv::Mat &img1, const cv::Mat &img2, const cv::Ma
         }
     }
 }
+
+cv::Mat Graphics::drawRectangles(const cv::Mat &img, const std::vector<cv::Rect> &rectangles) {
+    cv::Mat result = img.clone();
+    for (const cv::Rect &r : rectangles) {
+        cv::Scalar color = cv::Scalar(0, 0, 255); // Color for Drawing tool
+        cv::rectangle(result,
+                      cv::Point(cvRound(r.x), cvRound(r.y)),
+                      cv::Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
+                      color,
+                      3,
+                      cv::LINE_8,
+                      0);
+
+    }
+    return result;
+}

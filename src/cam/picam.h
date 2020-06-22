@@ -41,8 +41,8 @@ private:
     bool isBlur = false;
     bool isGrayscale = false;
 
-    double frameHeight = 720; // 1080;
-    double frameWidth = 1280; //1920;
+    double frameHeight = 720;
+    double frameWidth = 1280;
 
     bool isServerRunning = false;
 

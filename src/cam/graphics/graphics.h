@@ -40,6 +40,16 @@ public:
      */
     static cv::Mat blurBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
 
+
+    /**
+     * Draw rectangles onto image
+     *
+     * @param img
+     * @param rectangles
+     * @return
+     */
+    static cv::Mat drawRectangles(const cv::Mat& img, const std::vector<cv::Rect>& rectangles);
+
     /**
      * Alpha blend 2 cv::Mat images
      *

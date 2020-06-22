@@ -44,27 +44,7 @@ void PiCam::draw(Mat &img) {
         img = Graphics::grayscaleBackground(img, highlights, 50);
     }
 
-    for (const auto &r : faces) {
-        cv::Point center;
-        cv::Scalar color = cv::Scalar(0, 0, 255); // Color for Drawing tool
-        int radius;
-
-        double aspect_ratio = (double) r.bounds.width / r.bounds.height;
-        if (0.75 < aspect_ratio && aspect_ratio < 1.3 && false) {
-            center.x = cvRound((r.bounds.x + r.bounds.width * 0.5));
-            center.y = cvRound((r.bounds.y + r.bounds.height * 0.5));
-            radius = cvRound((r.bounds.width + r.bounds.height) * 0.75);
-            cv::circle(img, center, radius, color, 3, 8, 0);
-        } else
-            cv::rectangle(img,
-                          cv::Point(cvRound(r.bounds.x), cvRound(r.bounds.y)),
-                          cv::Point(cvRound((r.bounds.x + r.bounds.width - 1)), cvRound((r.bounds.y + r.bounds.height - 1))),
-                          color,
-                          3,
-                          8,
-                          0);
-
-    }
+    img = Graphics::drawRectangles(img, highlights);
 }
 
 PiCam::PiCam(const int &cameraIndex, const int &port) :
