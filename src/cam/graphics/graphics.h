@@ -44,11 +44,12 @@ public:
     /**
      * Draw rectangles onto image
      *
-     * @param img
-     * @param rectangles
-     * @return
+     * @param img - cv::Mat image to use as base (note that this image will not be modified)
+     * @param rectangles - cv::Rect object to draw as rectangles
+     * @return new cv::Mat image with rectangles on it
      */
     static cv::Mat drawRectangles(const cv::Mat& img, const std::vector<cv::Rect>& rectangles);
+
 
     /**
      * Alpha blend 2 cv::Mat images
