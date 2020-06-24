@@ -4,6 +4,8 @@
 
 #include "picam.h"
 
+#include "graphics/graphics.h"
+
 bool PiCam::run() {
     faceDetector.loadClassifiers();
 

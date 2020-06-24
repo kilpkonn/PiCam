@@ -6,7 +6,7 @@
 
 #include <utility>
 
-FaceDetector::FaceDetector(double frameWidth, double frameHeight) :
+FaceDetector::FaceDetector(const double &frameWidth, const double &frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {
 }
@@ -140,6 +140,6 @@ void FaceDetector::setFrameSize(const int &width, const int &height) {
 
 FaceDetector::~FaceDetector() = default;
 
-Face::Face(cv::Rect bounds, const bool isFrontal) : bounds(std::move(bounds)), isFrontal(isFrontal) {}
+Face::Face(cv::Rect bounds, const bool &isFrontal) : bounds(std::move(bounds)), isFrontal(isFrontal) {}
 
 Frame::Frame(std::vector<Face> faces) : faces(std::move(faces)) {}

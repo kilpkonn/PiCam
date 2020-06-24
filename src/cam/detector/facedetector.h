@@ -14,7 +14,7 @@ struct Face {
     cv::Rect bounds;
     bool isFrontal;
 
-    Face(cv::Rect bounds, bool isFrontal);
+    Face(cv::Rect bounds, const bool& isFrontal);
 };
 
 struct Frame {
@@ -36,7 +36,7 @@ public:
 
     void setFrameSize(const int& width, const int& height);
 
-    FaceDetector(double frameWidth, double frameHeight);
+    FaceDetector(const double& frameWidth, const double& frameHeight);
 
     virtual ~FaceDetector();
 
