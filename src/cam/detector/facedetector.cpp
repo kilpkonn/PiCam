@@ -6,6 +6,25 @@
 
 #include <utility>
 
+struct Vector2D {
+    int x, y;
+
+    Vector2D(int x, int y) : x(x), y(y) {}
+
+    Vector2D operator+(Vector2D o) const {
+        return {x + o.x, y + o.y};
+    }
+
+    Vector2D operator-(Vector2D o) const {
+        return {x - o.x, y - o.y};
+    }
+
+    Vector2D operator+=(Vector2D o) {
+        x += o.x;
+        y += o.y;
+    }
+};
+
 FaceDetector::FaceDetector(const double &frameWidth, const double &frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {
@@ -93,26 +112,35 @@ std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
 
 std::vector<Face> FaceDetector::predictFaces() {
     std::vector<Face> predictedFaces;
-    for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
-        const Frame& frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
+    std::vector<Vector2D> velocities;
 
-        for (const auto & face : frame.faces) {
+    for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
+        const Frame &frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
+
+        for (int j = 0; j < frame.faces.size(); j++) {
             bool isMerged = false;
-            for (auto & predictedFace : predictedFaces) {
-                if ((predictedFace.bounds & face.bounds).area() > std::min(predictedFace.bounds.area(), face.bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
-                    // Weighted towards never
-                    // TODO: Calculate lateral velocity etc.
-                    predictedFace.bounds = cv::Rect(
-                            std::round((predictedFace.bounds.x * 3 + face.bounds.x) / 4),
-                            std::round((predictedFace.bounds.y * 3 + face.bounds.y) / 4),
-                            std::max(predictedFace.bounds.width, face.bounds.width),
-                            std::max(predictedFace.bounds.height, face.bounds.height)
+            for (auto &predictedFace : predictedFaces) {
+                if ((predictedFace.bounds & frame.faces[j].bounds).area() >
+                    std::min(predictedFace.bounds.area(), frame.faces[j].bounds.area()) *
+                    MERGE_OVERLAPPING_AMOUNT) { // Weighted towards never
+
+                    velocities[j] += Vector2D(
+                            (frame.faces[j].bounds.x + frame.faces[j].bounds.width / 2) - (predictedFace.bounds.x + predictedFace.bounds.width / 2),
+                            (frame.faces[j].bounds.y + frame.faces[j].bounds.height / 2) - (predictedFace.bounds.y + predictedFace.bounds.height / 2)
                             );
+
+                    predictedFace.bounds = cv::Rect(
+                            std::round((predictedFace.bounds.x + velocities[j].x + frame.faces[j].bounds.x) / 2),
+                            std::round((predictedFace.bounds.y + velocities[j].y + frame.faces[j].bounds.y) / 2),
+                            std::max(predictedFace.bounds.width, frame.faces[j].bounds.width),
+                            std::max(predictedFace.bounds.height, frame.faces[j].bounds.height)
+                    );
                     isMerged = true;
                 }
             }
             if (!isMerged) {
-                predictedFaces.push_back(face);
+                predictedFaces.push_back(frame.faces[j]);
+                velocities.emplace_back(0, 0);
             }
         }
 
