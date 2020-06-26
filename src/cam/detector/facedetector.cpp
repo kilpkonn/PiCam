@@ -113,6 +113,7 @@ std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
 std::vector<Face> FaceDetector::predictFaces() {
     std::vector<Face> predictedFaces;
     std::vector<Vector2D> velocities;
+    std::vector<Vector2D> sizeIncreaseVelocities;
 
     for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
         const Frame &frame = frameBuffer[i % FRAME_BUFFER_LENGTH];
@@ -125,15 +126,21 @@ std::vector<Face> FaceDetector::predictFaces() {
                     MERGE_OVERLAPPING_AMOUNT) { // Weighted towards never
 
                     velocities[j] += Vector2D(
-                            (frame.faces[j].bounds.x + frame.faces[j].bounds.width / 2) - (predictedFace.bounds.x + predictedFace.bounds.width / 2),
-                            (frame.faces[j].bounds.y + frame.faces[j].bounds.height / 2) - (predictedFace.bounds.y + predictedFace.bounds.height / 2)
-                            );
+                            (frame.faces[j].bounds.x + frame.faces[j].bounds.width / 2) -
+                            (predictedFace.bounds.x + predictedFace.bounds.width / 2),
+                            (frame.faces[j].bounds.y + frame.faces[j].bounds.height / 2) -
+                            (predictedFace.bounds.y + predictedFace.bounds.height / 2)
+                    );
+                    sizeIncreaseVelocities[j] += Vector2D(
+                            frame.faces[j].bounds.width - predictedFace.bounds.width,
+                            frame.faces[j].bounds.height - predictedFace.bounds.height
+                    );
 
                     predictedFace.bounds = cv::Rect(
                             std::round((predictedFace.bounds.x + velocities[j].x + frame.faces[j].bounds.x) / 2),
                             std::round((predictedFace.bounds.y + velocities[j].y + frame.faces[j].bounds.y) / 2),
-                            std::max(predictedFace.bounds.width, frame.faces[j].bounds.width),
-                            std::max(predictedFace.bounds.height, frame.faces[j].bounds.height)
+                            (predictedFace.bounds.width + sizeIncreaseVelocities[j].x + frame.faces[j].bounds.width) / 2,
+                            (predictedFace.bounds.height + sizeIncreaseVelocities[j].y + frame.faces[j].bounds.height) / 2
                     );
                     isMerged = true;
                 }
@@ -141,6 +148,7 @@ std::vector<Face> FaceDetector::predictFaces() {
             if (!isMerged) {
                 predictedFaces.push_back(frame.faces[j]);
                 velocities.emplace_back(0, 0);
+                sizeIncreaseVelocities.emplace_back(0, 0);
             }
         }
 
