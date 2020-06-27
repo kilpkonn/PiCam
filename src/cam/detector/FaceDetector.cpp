@@ -2,7 +2,7 @@
 // Created by tavo on 19.06.20.
 //
 
-#include "facedetector.h"
+#include "FaceDetector.h"
 
 #include <utility>
 
