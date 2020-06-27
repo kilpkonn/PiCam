@@ -10,9 +10,30 @@
 #ifndef PICAM_FACEDETECTOR_H
 #define PICAM_FACEDETECTOR_H
 
+struct Vector2D {
+    int x, y;
+
+    Vector2D(int x, int y) : x(x), y(y) {}
+
+    Vector2D operator+(Vector2D o) const {
+        return {x + o.x, y + o.y};
+    }
+
+    Vector2D operator-(Vector2D o) const {
+        return {x - o.x, y - o.y};
+    }
+
+    Vector2D operator+=(Vector2D o) {
+        x += o.x;
+        y += o.y;
+    }
+};
+
 struct Face {
     cv::Rect bounds;
     bool isFrontal;
+    Vector2D velocity;
+    Vector2D sizeIncreaseVelocity;
 
     Face(cv::Rect bounds, const bool& isFrontal);
 };
