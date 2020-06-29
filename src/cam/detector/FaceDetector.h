@@ -26,6 +26,13 @@ struct Vector2D {
     Vector2D operator+=(Vector2D o) {
         x += o.x;
         y += o.y;
+        return *this;
+    }
+
+    Vector2D operator-=(Vector2D o) {
+        x -= o.x;
+        y -= o.y;
+        return *this;
     }
 };
 
