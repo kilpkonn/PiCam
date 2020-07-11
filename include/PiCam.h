@@ -3,8 +3,8 @@
 //
 
 #include <opencv2/opencv.hpp>
-#include "server/MJPEGWriter.h"
-#include "detector/FaceDetector.h"
+#include "MJPEGWriter.h"
+#include "FaceDetector.h"
 
 #ifndef PICAM_PICAM_H
 #define PICAM_PICAM_H

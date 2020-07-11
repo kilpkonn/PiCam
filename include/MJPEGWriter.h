@@ -11,11 +11,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-#define SOCKET    int
-#define SOCKADDR    struct sockaddr
-#define SOCKADDR_IN  struct sockaddr_in
-#define INVALID_SOCKET -1
-#define SOCKET_ERROR   -1
+#define SOCKET          int
+#define SOCKADDR        struct sockaddr
+#define SOCKADDR_IN     struct sockaddr_in
+#define INVALID_SOCKET  -1
+#define SOCKET_ERROR    -1
 #define TIMEOUT_M       200000
 #define NUM_CONNECTIONS 10
 

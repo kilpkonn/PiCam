@@ -2,7 +2,7 @@
 // Created by tavo on 19.06.20.
 //
 
-#include "FaceDetector.h"
+#include "../../../include/FaceDetector.h"
 
 #include <utility>
 
@@ -59,7 +59,9 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
     }
 
     for (const auto &r: flippedProfileFaces) {
-        faces.emplace_back(cv::Rect((faceRecognitionFrameWidth - r.x - r.width) / fx, r.y / fy, r.width / fx, r.height / fy), false);
+        faces.emplace_back(
+                cv::Rect((faceRecognitionFrameWidth - r.x - r.width) / fx, r.y / fy, r.width / fx, r.height / fy),
+                false);
     }
 
     for (const auto &r : profileFaces) {
@@ -77,13 +79,14 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
 std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
     for (int i = 0; i < faces.size(); i++) {
         for (int j = i + 1; j < faces.size(); j++) {
-            if ((faces[i].bounds & faces[j].bounds).area() > std::min(faces[i].bounds.area(), faces[j].bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
+            if ((faces[i].bounds & faces[j].bounds).area() >
+                std::min(faces[i].bounds.area(), faces[j].bounds.area()) * MERGE_OVERLAPPING_AMOUNT) {
                 faces[i].bounds = cv::Rect(
                         std::round((faces[i].bounds.x + faces[j].bounds.x) / 2),
                         std::round((faces[i].bounds.y + faces[j].bounds.y) / 2),
                         std::max(faces[i].bounds.width, faces[j].bounds.width),
                         std::max(faces[i].bounds.height, faces[j].bounds.height)
-                        );
+                );
                 faces.erase(faces.begin() + j);
             }
         }
@@ -119,7 +122,8 @@ std::vector<Face> FaceDetector::predictFaces() {
                             std::round((predictedFace.bounds.x + predictedFace.velocity.x + face.bounds.x) / 2),
                             std::round((predictedFace.bounds.y + predictedFace.velocity.y + face.bounds.y) / 2),
                             (predictedFace.bounds.width + predictedFace.sizeIncreaseVelocity.x + face.bounds.width) / 2,
-                            (predictedFace.bounds.height + predictedFace.sizeIncreaseVelocity.y + face.bounds.height) / 2
+                            (predictedFace.bounds.height + predictedFace.sizeIncreaseVelocity.y + face.bounds.height) /
+                            2
                     );
                     isMerged = true;
                 }
