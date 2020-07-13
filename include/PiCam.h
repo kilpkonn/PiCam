@@ -1,14 +1,15 @@
 //
 // Created by tavo on 09.06.20.
 //
+#ifndef PICAM_PICAM_H
+#define PICAM_PICAM_H
 
 #include <opencv2/opencv.hpp>
 #include "MJPEGWriter.h"
 #include "FaceDetector.h"
 
-#ifndef PICAM_PICAM_H
-#define PICAM_PICAM_H
 
+namespace picam {
 
 class PiCam {
 public:
@@ -49,6 +50,8 @@ private:
 
     MJPEGWriter* mjpegWriter = nullptr;
 };
+
+}
 
 
 #endif //PICAM_PICAM_H

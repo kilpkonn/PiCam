@@ -6,7 +6,7 @@
 
 #include "../../include/Graphics.h"
 
-bool PiCam::run() {
+bool picam::PiCam::run() {
     faceDetector.loadClassifiers();
 
     cv::Mat frame;
@@ -32,31 +32,31 @@ bool PiCam::run() {
     return false;
 }
 
-void PiCam::draw(Mat &img) {
+void picam::PiCam::draw(Mat &img) {
     std::vector<Face> faces = faceDetector.predictFaces();
 
     std::vector<Rect> highlights;
     highlights.reserve(faces.size());
     std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
     if (isBlur) {
-        img = Graphics::blurBackground(img, highlights, 70);
+        img = graphics::blurBackground(img, highlights, 70);
     }
 
     if (isGrayscale) {
-        img = Graphics::grayscaleBackground(img, highlights, 50);
+        img = graphics::grayscaleBackground(img, highlights, 50);
     }
 
-    img = Graphics::drawRectangles(img, highlights);
+    img = graphics::drawRectangles(img, highlights);
 }
 
-PiCam::PiCam(const int &cameraIndex, const int &port) :
+picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
         cap(cameraIndex),
         faceDetector(frameWidth, frameHeight) {
 }
 
-void PiCam::startServer() {
+void picam::PiCam::startServer() {
     std::cout << "Starting server at port: " << port << std::endl;
     mjpegWriter = new MJPEGWriter(port);
     mjpegWriter->start();
@@ -64,7 +64,7 @@ void PiCam::startServer() {
     std::cout << "Server is up!" << std::endl;
 }
 
-void PiCam::stopServer() {
+void picam::PiCam::stopServer() {
     std::cout << "Stopping server..." << std::endl;
     if (isServerRunning) {
         mjpegWriter->stop();
@@ -76,19 +76,19 @@ void PiCam::stopServer() {
 }
 
 
-PiCam::~PiCam() {
+picam::PiCam::~PiCam() {
     stopServer();
 }
 
-void PiCam::setBlur(const bool &blur) {
+void picam::PiCam::setBlur(const bool &blur) {
     this->isBlur = blur;
 }
 
-void PiCam::setGrayscale(const bool &grayscale) {
+void picam::PiCam::setGrayscale(const bool &grayscale) {
     this->isGrayscale = grayscale;
 }
 
-void PiCam::setFrameSize(const int& width, const int& height) {
+void picam::PiCam::setFrameSize(const int& width, const int& height) {
     frameWidth = width;
     frameHeight = height;
     faceDetector.setFrameSize(width, height);

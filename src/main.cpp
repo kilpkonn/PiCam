@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    PiCam piCam(0, port);
+    picam::PiCam piCam(0, port);
     piCam.setBlur(blur);
     piCam.setGrayscale(grayscale);
     piCam.setFrameSize(width, height);

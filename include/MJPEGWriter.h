@@ -1,6 +1,7 @@
 /**
  * See @https://github.com/JPery/MJPEGWriter/blob/master/MJPEGWriter.h
  */
+#pragma once
 
 #include <unistd.h>
 #include <ctime>

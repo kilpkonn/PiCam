@@ -2,16 +2,16 @@
 // Created by tavo on 19.06.20.
 //
 
-#include "../../../include/FaceDetector.h"
+#include "../../include/FaceDetector.h"
 
 #include <utility>
 
-FaceDetector::FaceDetector(const double &frameWidth, const double &frameHeight) :
+picam::FaceDetector::FaceDetector(const double &frameWidth, const double &frameHeight) :
         frameWidth(frameWidth),
         frameHeight(frameHeight) {
 }
 
-std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
+std::vector<picam::Face> picam::FaceDetector::detectFaces(const cv::Mat &frame) {
     std::vector<Face> faces;
 
     std::vector<cv::Rect> frontalFaces, profileFaces, flippedProfileFaces;
@@ -76,7 +76,7 @@ std::vector<Face> FaceDetector::detectFaces(const cv::Mat &frame) {
     return faces;
 }
 
-std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
+std::vector<picam::Face> picam::FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
     for (int i = 0; i < faces.size(); i++) {
         for (int j = i + 1; j < faces.size(); j++) {
             if ((faces[i].bounds & faces[j].bounds).area() >
@@ -94,7 +94,7 @@ std::vector<Face> FaceDetector::mergeOverlapped(std::vector<Face> &faces) {
     return faces;
 }
 
-std::vector<Face> FaceDetector::predictFaces() {
+std::vector<picam::Face> picam::FaceDetector::predictFaces() {
     std::vector<Face> predictedFaces;
 
     for (uint i = frameBufferIndexPointer + 1; i < frameBufferIndexPointer + FRAME_BUFFER_LENGTH; i++) {
@@ -138,7 +138,7 @@ std::vector<Face> FaceDetector::predictFaces() {
     return predictedFaces;
 }
 
-bool FaceDetector::loadClassifiers() {
+bool picam::FaceDetector::loadClassifiers() {
     if (!frontalFaceClassifier.load("./data/haarcascades/haarcascade_frontalface_default.xml")) {
         std::cout << "Unable to load classifier data for frontal face!" << std::endl;
         return false;
@@ -150,14 +150,14 @@ bool FaceDetector::loadClassifiers() {
     return true;
 }
 
-void FaceDetector::setFrameSize(const int &width, const int &height) {
+void picam::FaceDetector::setFrameSize(const int &width, const int &height) {
     this->frameWidth = width;
     this->frameHeight = height;
 }
 
-FaceDetector::~FaceDetector() = default;
+picam::FaceDetector::~FaceDetector() = default;
 
-Face::Face(cv::Rect bounds, const bool &isFrontal) :
+picam::Face::Face(cv::Rect bounds, const bool &isFrontal) :
         bounds(std::move(bounds)),
         isFrontal(isFrontal),
         velocity(0, 0),
@@ -165,4 +165,4 @@ Face::Face(cv::Rect bounds, const bool &isFrontal) :
 
 }
 
-Frame::Frame(std::vector<Face> faces) : faces(std::move(faces)) {}
+picam::Frame::Frame(std::vector<Face> faces) : faces(std::move(faces)) {}

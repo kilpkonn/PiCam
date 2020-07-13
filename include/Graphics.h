@@ -1,6 +1,7 @@
 //
 // Created by tavo on 20.06.20.
 //
+#pragma once
 
 #include <opencv2/opencv.hpp>
 
@@ -11,12 +12,8 @@
 #define MASK_BLUR_SIZE 7
 #define MASK_SIG_X 5
 
-#ifndef PICAM_GRAPHICS_H
-#define PICAM_GRAPHICS_H
 
-
-class Graphics {
-public:
+namespace graphics {
     /**
      * Grayscale image background whilst keeping highlights colorful.
      * Uses GaussianBlur for smoother edges, so that definitely has impact on performance.
@@ -26,7 +23,7 @@ public:
      * @param radius - extra radius around rectangles to keep colorful
      * @return new cv::Mat image with grayscale background
      */
-    static cv::Mat grayscaleBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
+    cv::Mat grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect> &highlights, const int &radius);
 
 
     /**
@@ -38,7 +35,7 @@ public:
      * @param radius - extra radius around rectangles
      * @return new cv::Mat image with grayscale background
      */
-    static cv::Mat blurBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
+    cv::Mat blurBackground(const cv::Mat& img, const std::vector<cv::Rect>& highlights, const int& radius);
 
 
     /**
@@ -48,7 +45,7 @@ public:
      * @param rectangles - cv::Rect object to draw as rectangles
      * @return new cv::Mat image with rectangles on it
      */
-    static cv::Mat drawRectangles(const cv::Mat& img, const std::vector<cv::Rect>& rectangles);
+    cv::Mat drawRectangles(const cv::Mat& img, const std::vector<cv::Rect>& rectangles);
 
 
     /**
@@ -59,9 +56,6 @@ public:
      * @param mask - cv::Mat grayscale image with weights to use while blending
      * @param blended - output image (result of blending)
      */
-    static void alphaBlend(const cv::Mat& img1, const cv::Mat& img2, const cv::Mat& mask, cv::Mat& blended);
+    void alphaBlend(const cv::Mat& img1, const cv::Mat& img2, const cv::Mat& mask, cv::Mat& blended);
 
-};
-
-
-#endif //PICAM_GRAPHICS_H
+}

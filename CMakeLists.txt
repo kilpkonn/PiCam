@@ -17,9 +17,6 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 file(GLOB SOURCE_FILES
         src/main.cpp
         src/cam/*.cpp
-        src/cam/server/*.cpp
-        src/cam/detector/*.cpp
-        src/cam/graphics/*.cpp
         include/*.h
         )
 add_executable(pi_cam ${SOURCE_FILES})

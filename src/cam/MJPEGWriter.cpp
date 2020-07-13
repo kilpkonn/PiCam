@@ -2,7 +2,7 @@
  * See @https://github.com/JPery/MJPEGWriter/blob/master/MJPEGWriter.cpp
  */
 
-#include "../../../include/MJPEGWriter.h"
+#include "../../include/MJPEGWriter.h"
 #include <fstream>
 
 void MJPEGWriter::Listener() {
