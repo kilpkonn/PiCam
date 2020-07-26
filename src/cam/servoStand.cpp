@@ -2,24 +2,29 @@
 // Created by tavo on 26.07.20.
 //
 #include <cmath>
+#include <algorithm>
 
 #include "servoStand.h"
 
-ServoStand::ServoStand() {
+ServoStand::ServoStand(uint8_t xAxisServoPin, uint8_t yAxisServoPin) :
+        xAxisServoPin_{xAxisServoPin},
+        yAxisServoPin_{yAxisServoPin} {
     isGpioInitalized = gpioInitialise();
-    gpioSetMode(xAxisServoPin, PI_OUTPUT);
-    gpioSetMode(yAxisServoPin, PI_OUTPUT);
-    gpioSetPWMfrequency(xAxisServoPin, servoPwmFrequency);
-    gpioSetPWMfrequency(yAxisServoPin, servoPwmFrequency);
+    gpioSetMode(xAxisServoPin_, PI_OUTPUT);
+    gpioSetMode(yAxisServoPin_, PI_OUTPUT);
+    gpioSetPWMfrequency(xAxisServoPin_, servoPwmFrequency);
+    gpioSetPWMfrequency(yAxisServoPin_, servoPwmFrequency);
 }
 
-#include "iostream"
 void ServoStand::rotate(float x, float y) {
+    x = std::clamp(x, -M_PIf32 / 2, M_PIf32 / 2);
+    y = std::clamp(y, -M_PIf32 / 2, M_PIf32 / 2);
     unsigned xVal = minServoValue + static_cast<unsigned>((x + M_PIf32 / 2) / M_PI * (maxServoValue - minServoValue));
     unsigned yVal = minServoValue + static_cast<unsigned>((y + M_PIf32 / 2) / M_PI * (maxServoValue - minServoValue));
-    gpioServo(xAxisServoPin, xVal);
-    gpioServo(yAxisServoPin, yVal);
-    std::cout << xVal << std::endl;
+    currentXAngle = x;
+    currentYAngle = y;
+    gpioServo(xAxisServoPin_, xVal);
+    gpioServo(yAxisServoPin_, yVal);
 }
 
 ServoStand::~ServoStand() {

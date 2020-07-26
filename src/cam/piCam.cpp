@@ -19,8 +19,6 @@ bool picam::PiCam::run() {
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
 
-    ServoStand stand;
-
     while (cap.isOpened()) {
         cap >> frame;
 
@@ -31,7 +29,6 @@ bool picam::PiCam::run() {
         if (mjpegWriter != nullptr) {
             mjpegWriter->write(frame);
         }
-        stand.rotate(0.5f, 0.5f);
     }
     return false;
 }
@@ -57,7 +54,8 @@ picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
         cap(cameraIndex),
-        faceDetector(frameWidth, frameHeight) {
+        faceDetector(frameWidth, frameHeight),
+        servoStand(17, 18) {
 }
 
 void picam::PiCam::startServer() {

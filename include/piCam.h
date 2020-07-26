@@ -46,6 +46,7 @@ private:
     cv::VideoCapture cap;
 
     FaceDetector faceDetector;
+    ServoStand servoStand;
 
     MJPEGWriter* mjpegWriter = nullptr;
 };
