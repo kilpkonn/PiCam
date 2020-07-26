@@ -1,8 +1,7 @@
 //
 // Created by tavo on 19.06.20.
 //
-#ifndef PICAM_FACEDETECTOR_H
-#define PICAM_FACEDETECTOR_H
+#pragma once
 
 #include <opencv2/opencv.hpp>
 
@@ -88,4 +87,3 @@ namespace picam {
     };
 
 }
-#endif //PICAM_FACEDETECTOR_H

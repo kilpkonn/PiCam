@@ -7,10 +7,10 @@ cvVersion="master"
 mkdir -p ~/install/opencv
 
 # Clean build directories
-rm -rf ~/install/opencv
-rm -rf ~/install/opencv_contrib
+sudo rm -rf ~/install/opencv
+sudo rm -rf ~/install/opencv_contrib
 
-rm -rf /opt/opencv-4.3.0
+sudo rm -rf /opt/opencv-4.3.0
 
 sudo apt update && sudo apt upgrade -y
 
@@ -27,6 +27,8 @@ sudo apt -y update
 
 sudo apt -y install libjasper1
 sudo apt -y install libtiff-dev
+
+sudo mv ./conf/opencv.conf /etc/ld.so.conf.d/opencv.conf # TODO: Fix this
 
 sudo apt -y install libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev
 sudo apt -y install libxine2-dev libv4l-dev
@@ -74,13 +76,21 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
   -D BUILD_EXAMPLES=ON ..
   # -D OPENCV_PYTHON3_INSTALL_PATH=~/OpenCV-$cvVersion-py3/lib/python3.5/site-packages \
 
+make -j4
 make install
 sudo chmod +x -R ~/install/opencv-4.3.0
 sudo mv ~/install/opencv-4.3.0 /opt/opencv-4.3.0
-sudo mv ./conf/opencv.conf /etc/ld.so.conf.d/opencv.conf
 
 echo "Done installing OpenCV!"
 
+cd ~/install || exit
+sudo apt install python-setuptools python3-setuptools
+wget https://github.com/joan2937/pigpio/archive/master.zip
+unzip master.zip
+cd pigpio-master || exit
+make
+sudo make install
+
 echo "Cleaning up folders..."
-rm -rf ~/install
+sudo rm -rf ~/install
 echo "Done."

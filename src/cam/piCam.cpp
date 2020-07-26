@@ -2,9 +2,9 @@
 // Created by tavo on 09.06.20.
 //
 
-#include "../../include/PiCam.h"
+#include "piCam.h"
 
-#include "../../include/Graphics.h"
+#include "graphics.h"
 
 bool picam::PiCam::run() {
     faceDetector.loadClassifiers();

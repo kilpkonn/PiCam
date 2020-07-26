@@ -1,12 +1,11 @@
 //
 // Created by tavo on 09.06.20.
 //
-#ifndef PICAM_PICAM_H
-#define PICAM_PICAM_H
+#pragma once
 
 #include <opencv2/opencv.hpp>
-#include "MJPEGWriter.h"
-#include "FaceDetector.h"
+#include "mjpegWriter.h"
+#include "faceDetector.h"
 
 
 namespace picam {
@@ -52,6 +51,3 @@ private:
 };
 
 }
-
-
-#endif //PICAM_PICAM_H

@@ -2,7 +2,7 @@
 // Created by tavo on 20.06.20.
 //
 
-#include "../../include/Graphics.h"
+#include "graphics.h"
 
 cv::Mat graphics::grayscaleBackground(const cv::Mat &img, const std::vector<cv::Rect>& highlights, const int& radius) {
     cv::Mat grayscale;
