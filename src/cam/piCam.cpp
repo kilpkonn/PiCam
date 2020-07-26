@@ -2,9 +2,10 @@
 // Created by tavo on 09.06.20.
 //
 
-#include "piCam.h"
-
 #include "graphics.h"
+#include "servoStand.h"
+
+#include "piCam.h"
 
 bool picam::PiCam::run() {
     faceDetector.loadClassifiers();
@@ -18,6 +19,8 @@ bool picam::PiCam::run() {
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
 
+    ServoStand stand;
+
     while (cap.isOpened()) {
         cap >> frame;
 
@@ -28,6 +31,7 @@ bool picam::PiCam::run() {
         if (mjpegWriter != nullptr) {
             mjpegWriter->write(frame);
         }
+        stand.rotate(0.5f, 0.5f);
     }
     return false;
 }
