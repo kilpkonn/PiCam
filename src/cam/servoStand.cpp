@@ -8,7 +8,9 @@
 
 ServoStand::ServoStand(uint8_t xAxisServoPin, uint8_t yAxisServoPin) :
         xAxisServoPin_{xAxisServoPin},
-        yAxisServoPin_{yAxisServoPin} {
+        yAxisServoPin_{yAxisServoPin},
+        currentXAngle{0.0f},
+        currentYAngle{0.0f} {
     isGpioInitalized = gpioInitialise();
     gpioSetMode(xAxisServoPin_, PI_OUTPUT);
     gpioSetMode(yAxisServoPin_, PI_OUTPUT);

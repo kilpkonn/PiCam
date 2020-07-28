@@ -7,6 +7,14 @@
 
 #include "piCam.h"
 
+picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
+        cameraIndex(cameraIndex),
+        port(port),
+        cap(cameraIndex),
+        faceDetector(frameWidth, frameHeight),
+        servoStand(17, 18) {
+}
+
 bool picam::PiCam::run() {
     faceDetector.loadClassifiers();
 
@@ -25,6 +33,7 @@ bool picam::PiCam::run() {
         //cv::cvtColor(frame, frame, COLOR_BGR2RGB);
         faceDetector.detectFaces(frame);
         draw(frame);
+        rotateStand();
 
         if (mjpegWriter != nullptr) {
             mjpegWriter->write(frame);
@@ -34,11 +43,11 @@ bool picam::PiCam::run() {
 }
 
 void picam::PiCam::draw(Mat &img) {
-    std::vector<Face> faces = faceDetector.predictFaces();
+    currentFaces = faceDetector.predictFaces();
 
     std::vector<Rect> highlights;
-    highlights.reserve(faces.size());
-    std::transform(faces.begin(), faces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
+    highlights.reserve(currentFaces.size());
+    std::transform(currentFaces.begin(), currentFaces.end(), std::back_inserter(highlights), [](const Face &f) { return f.bounds; });
     if (isBlur) {
         img = graphics::blurBackground(img, highlights, 70);
     }
@@ -48,14 +57,6 @@ void picam::PiCam::draw(Mat &img) {
     }
 
     img = graphics::drawRectangles(img, highlights);
-}
-
-picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
-        cameraIndex(cameraIndex),
-        port(port),
-        cap(cameraIndex),
-        faceDetector(frameWidth, frameHeight),
-        servoStand(17, 18) {
 }
 
 void picam::PiCam::startServer() {
@@ -90,7 +91,7 @@ void picam::PiCam::setGrayscale(const bool &grayscale) {
     this->isGrayscale = grayscale;
 }
 
-void picam::PiCam::setFrameSize(const int& width, const int& height) {
+void picam::PiCam::setFrameSize(const int &width, const int &height) {
     frameWidth = width;
     frameHeight = height;
     faceDetector.setFrameSize(width, height);
@@ -99,4 +100,20 @@ void picam::PiCam::setFrameSize(const int& width, const int& height) {
         cap.set(cv::CAP_PROP_FRAME_WIDTH, frameWidth);
         cap.set(cv::CAP_PROP_FRAME_HEIGHT, frameHeight);
     }
+}
+
+void picam::PiCam::rotateStand() {
+    float avgX = 0.0f;
+    float avgY = 0.0f;
+    for (const auto &face: currentFaces) {
+        avgX += face.bounds.x + static_cast<float>(face.bounds.width) / 2;
+        avgY += face.bounds.y + static_cast<float>(face.bounds.height) / 2;
+    }
+    avgX /= currentFaces.size();
+    avgY /= currentFaces.size();
+
+    float targetX = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
+    float targetY = 0;
+
+    servoStand.rotate(targetX, targetY);
 }

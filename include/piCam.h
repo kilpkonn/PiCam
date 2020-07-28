@@ -4,8 +4,10 @@
 #pragma once
 
 #include <opencv2/opencv.hpp>
+
 #include "mjpegWriter.h"
 #include "faceDetector.h"
+#include "servoStand.h"
 
 
 namespace picam {
@@ -32,6 +34,8 @@ private:
 
     void draw(cv::Mat &img);
 
+    void rotateStand();
+
     int cameraIndex;
     int port;
 
@@ -44,6 +48,8 @@ private:
     bool isServerRunning = false;
 
     cv::VideoCapture cap;
+
+    std::vector<Face> currentFaces;
 
     FaceDetector faceDetector;
     ServoStand servoStand;
