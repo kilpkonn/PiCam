@@ -112,6 +112,11 @@ void picam::PiCam::rotateStand() {
     avgX /= currentFaces.size();
     avgY /= currentFaces.size();
 
+    if (currentFaces.empty()) {
+        avgX = static_cast<float>(frameWidth) / 2;
+        avgY = static_cast<float>(frameHeight) / 2;
+    }
+
     float targetX = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
     float targetY = 0;
 
