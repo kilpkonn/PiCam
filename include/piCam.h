@@ -45,6 +45,13 @@ private:
     double frameHeight = 720;
     double frameWidth = 1280;
 
+    float minXServo = -M_PI_2f32;
+    float maxXServo = M_PI_2f32;
+    float minYServo = -0.3;
+    float maxYServo = M_PI_2f32;
+    float currentXServo = (minXServo + maxXServo) / 2;
+    float currentYServo = (minYServo + maxYServo) / 2;
+
     bool isServerRunning = false;
 
     cv::VideoCapture cap;

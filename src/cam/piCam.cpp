@@ -113,7 +113,10 @@ void picam::PiCam::rotateStand() {
     }
 
     float targetX = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
-    float targetY = -0.3;
+    currentYServo += (avgY - frameHeight / 2) * 0.01f;
 
-    servoStand.rotate(-targetX, targetY);
+    currentXServo = std::clamp(currentXServo, minXServo, maxXServo);
+    currentYServo = std::clamp(currentYServo, minYServo, maxYServo);
+
+    servoStand.rotate(-targetX, currentYServo);
 }
