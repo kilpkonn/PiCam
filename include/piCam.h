@@ -42,8 +42,8 @@ private:
     bool isBlur = false;
     bool isGrayscale = false;
 
-    double frameHeight = 720;
-    double frameWidth = 1280;
+    float frameHeight = 720;
+    float frameWidth = 1280;
 
     float minXServo = -M_PI_2f32;
     float maxXServo = M_PI_2f32;
