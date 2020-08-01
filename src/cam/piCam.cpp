@@ -107,16 +107,16 @@ void picam::PiCam::rotateStand() {
     avgX /= currentFaces.size();
     avgY /= currentFaces.size();
 
-    if (currentFaces.empty()) {
-        avgX = (minXServo + maxXServo) / 2;
-        avgY = (minYServo + maxYServo) / 2;
-    }
-
-    currentXServo = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
+    //currentXServo = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
     currentYServo += (avgY - frameHeight / 2.0f) * 0.00001f;
 
     currentXServo = std::clamp(currentXServo, minXServo, maxXServo);
     currentYServo = std::clamp(currentYServo, minYServo, maxYServo);
+
+    if (currentFaces.empty()) {
+        currentXServo = (minXServo + maxXServo) / 2;
+        currentYServo = (minYServo + maxYServo) / 2;
+    }
 
     servoStand.rotate(-currentXServo, currentYServo);
 }
