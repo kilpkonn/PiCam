@@ -1,9 +1,4 @@
-//
-// Created by tavo on 09.06.20.
-//
-
 #include "graphics.h"
-#include "servoStand.h"
 
 #include "piCam.h"
 
@@ -118,7 +113,7 @@ void picam::PiCam::rotateStand() {
     }
 
     float targetX = -M_PI_2f32 + (avgX / frameWidth) * M_PIf32;
-    float targetY = 0;
+    float targetY = -M_PI_2f32;
 
-    servoStand.rotate(targetX, targetY);
+    servoStand.rotate(-targetX, targetY);
 }
