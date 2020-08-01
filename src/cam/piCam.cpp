@@ -107,8 +107,8 @@ void picam::PiCam::rotateStand() {
     avgX /= currentFaces.size();
     avgY /= currentFaces.size();
 
-    currentXServo += (avgX - frameWidth / 2.0f) * 0.0001f;
-    currentYServo += (avgY - frameHeight / 2.0f) * 0.0001f;
+    currentXServo += (avgX - frameWidth / 2.0f) * 0.00006f;
+    currentYServo += (avgY - frameHeight / 2.0f) * 0.00005f;
 
     currentXServo = std::clamp(currentXServo, minXServo, maxXServo);
     currentYServo = std::clamp(currentYServo, minYServo, maxYServo);

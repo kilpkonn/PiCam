@@ -5,7 +5,7 @@
 
 #include <opencv2/opencv.hpp>
 
-#define FRAME_BUFFER_LENGTH 7
+#define FRAME_BUFFER_LENGTH 14
 #define MERGE_OVERLAPPING_AMOUNT 0.3
 
 namespace picam {
