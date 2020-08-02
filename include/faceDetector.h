@@ -10,10 +10,11 @@
 
 namespace picam {
 
+    template<typename T>
     struct Vector2D {
-        int x, y;
+        T x, y;
 
-        Vector2D(int x, int y) : x(x), y(y) {}
+        Vector2D(T x, T y) : x(x), y(y) {}
 
         Vector2D operator+(Vector2D o) const {
             return {x + o.x, y + o.y};
@@ -23,13 +24,13 @@ namespace picam {
             return {x - o.x, y - o.y};
         }
 
-        Vector2D operator+=(Vector2D o) {
+        Vector2D operator+=(const Vector2D &o) {
             x += o.x;
             y += o.y;
             return *this;
         }
 
-        Vector2D operator-=(Vector2D o) {
+        Vector2D operator-=(const Vector2D &o) {
             x -= o.x;
             y -= o.y;
             return *this;
@@ -39,8 +40,8 @@ namespace picam {
     struct Face {
         cv::Rect bounds;
         bool isFrontal;
-        Vector2D velocity;
-        Vector2D sizeIncreaseVelocity;
+        Vector2D<int> velocity;
+        Vector2D<int> sizeIncreaseVelocity;
 
         Face(cv::Rect bounds, const bool &isFrontal);
     };

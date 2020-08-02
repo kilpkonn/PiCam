@@ -5,6 +5,9 @@
 picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
+        randDistribution(-0.01f, 0.01f),
+        currentStandLocation((minXServo + maxXServo) / 2, (minYServo + maxYServo) / 2),
+        searchDirection(randDistribution(randGenerator), randDistribution(randGenerator)),
         cap(cameraIndex),
         faceDetector(frameWidth, frameHeight),
         servoStand(17, 18) {
@@ -107,16 +110,20 @@ void picam::PiCam::rotateStand() {
     avgX /= currentFaces.size();
     avgY /= currentFaces.size();
 
-    currentXServo += (avgX - frameWidth / 2.0f) * 0.00006f;
-    currentYServo += (avgY - frameHeight / 2.0f) * 0.00005f;
+    currentStandLocation += Vector2D((avgX - frameWidth / 2.0f) * speedXMultiplier,
+                                     (avgY - frameHeight / 2.0f) * speedYMultiplier);
 
-    currentXServo = std::clamp(currentXServo, minXServo, maxXServo);
-    currentYServo = std::clamp(currentYServo, minYServo, maxYServo);
 
     if (currentFaces.empty()) {
-        currentXServo = (minXServo + maxXServo) / 2;
-        currentYServo = (minYServo + maxYServo) / 2;
+        currentStandLocation += searchDirection;
+        if (currentStandLocation.x < minXServo || currentStandLocation.x > maxXServo ||
+            currentStandLocation.y < minYServo || currentStandLocation.y > maxYServo) {
+            searchDirection = Vector2D(randDistribution(randGenerator), randDistribution(randGenerator));
+        }
     }
 
-    servoStand.rotate(-currentXServo, currentYServo);
+    currentStandLocation.x = std::clamp(currentStandLocation.x, minXServo, maxXServo);
+    currentStandLocation.y = std::clamp(currentStandLocation.y, minYServo, maxYServo);
+
+    servoStand.rotate(-currentStandLocation.x, currentStandLocation.y);
 }

@@ -1,7 +1,6 @@
-//
-// Created by tavo on 09.06.20.
-//
 #pragma once
+
+#include <random>
 
 #include <opencv2/opencv.hpp>
 
@@ -49,10 +48,16 @@ private:
     float maxXServo = M_PI_2f32;
     float minYServo = -0.3;
     float maxYServo = M_PI_2f32;
-    float currentXServo = (minXServo + maxXServo) / 2;
-    float currentYServo = (minYServo + maxYServo) / 2;
+    float speedXMultiplier = 0.00006f;
+    float speedYMultiplier = 0.00005f;
 
     bool isServerRunning = false;
+
+    std::default_random_engine randGenerator;
+    std::uniform_real_distribution<float> randDistribution;
+
+    Vector2D<float> currentStandLocation;
+    Vector2D<float> searchDirection;
 
     cv::VideoCapture cap;
 
