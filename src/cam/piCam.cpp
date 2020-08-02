@@ -5,7 +5,7 @@
 picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
-        randDistribution(-0.0001f, 0.0001f),
+        randDistribution(-0.00001f, 0.00001f),
         currentStandLocation((minXServo + maxXServo) / 2, (minYServo + maxYServo) / 2),
         searchDirection(randDistribution(randGenerator), randDistribution(randGenerator)),
         cap(cameraIndex),
@@ -110,15 +110,15 @@ void picam::PiCam::rotateStand() {
     avgX /= currentFaces.size();
     avgY /= currentFaces.size();
 
-    currentStandLocation += Vector2D((avgX - frameWidth / 2.0f) * speedXMultiplier,
-                                     (avgY - frameHeight / 2.0f) * speedYMultiplier);
-
-
-    if (currentFaces.empty()) {
+    if (!currentFaces.empty()) {
+        currentStandLocation += Vector2D((avgX - frameWidth / 2.0f) * speedXMultiplier,
+                                         (avgY - frameHeight / 2.0f) * speedYMultiplier);
+    } else {
         currentStandLocation += searchDirection;
         if (currentStandLocation.x < minXServo || currentStandLocation.x > maxXServo ||
             currentStandLocation.y < minYServo || currentStandLocation.y > maxYServo) {
             searchDirection = Vector2D(randDistribution(randGenerator), randDistribution(randGenerator));
+            std::cout << searchDirection.x << " - " << searchDirection.y << std::endl;
         }
     }
 
