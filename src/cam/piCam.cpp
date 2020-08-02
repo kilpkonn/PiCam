@@ -5,7 +5,7 @@
 picam::PiCam::PiCam(const int &cameraIndex, const int &port) :
         cameraIndex(cameraIndex),
         port(port),
-        randDistribution(-0.00001f, 0.00001f),
+        randDistribution(-0.001f, 0.001f),
         currentStandLocation((minXServo + maxXServo) / 2, (minYServo + maxYServo) / 2),
         searchDirection(randDistribution(randGenerator), randDistribution(randGenerator)),
         cap(cameraIndex),
