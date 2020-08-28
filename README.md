@@ -18,6 +18,22 @@ _Make sure you have data directory next to pi_cam executable!_
 ./picam --port 8090 --height 480 --width 720 -b -g 
 ```
 
+### How to fake webcam
+__See: https://snapcraft.io/fakecam__
+```bash
+sudo apt-get install v4l2loopback-dkms
+ echo options v4l2loopback devices=1 video_nr=20 \
+ card_label="fakecam" exclusive_caps=1 | sudo tee -a \
+ /etc/modprobe.d/fakecam.conf
+ echo v4l2loopback | sudo tee -a /etc/modules-load.d/fakecam.conf
+ sudo modprobe -r v4l2loopback
+ sudo modprobe v4l2loopback
+```
+Then run
+```bash
+ffmpeg -re -i http://picam.local:8080 -map 0:v -vf format=yuv420p -f v4l2 /dev/video20
+```
+
 ## How to build
 
 ### Clone

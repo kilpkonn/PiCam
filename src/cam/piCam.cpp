@@ -118,7 +118,6 @@ void picam::PiCam::rotateStand() {
         if (currentStandLocation.x < minXServo || currentStandLocation.x > maxXServo ||
             currentStandLocation.y < minYServo || currentStandLocation.y > maxYServo) {
             searchDirection = Vector2D(randDistribution(randGenerator), randDistribution(randGenerator));
-            std::cout << searchDirection.x << " - " << searchDirection.y << std::endl;
         }
     }
 
