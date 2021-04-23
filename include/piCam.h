@@ -46,8 +46,8 @@ private:
 
     float minXServo = -M_PI_2f32 / 6;
     float maxXServo = M_PI_2f32 / 6;
-    float minYServo = -0.2;
-    float maxYServo = M_PI_2f32 / 6;
+    float minYServo = -0.0;
+    float maxYServo = M_PI_2f32;
     float speedXMultiplier = 0.00006f;
     float speedYMultiplier = 0.00005f;
 
