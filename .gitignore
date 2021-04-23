@@ -34,3 +34,4 @@
 ./build
 ./build-armhf
 ./cmake-build-debug
+/.gtm/

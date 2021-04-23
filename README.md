@@ -19,7 +19,10 @@ _Make sure you have data directory next to pi_cam executable!_
 ```
 
 ### How to fake webcam
-__See: https://snapcraft.io/fakecam__
+_See: https://sn
+
+
+apcraft.io/fakecam_
 ```bash
 sudo apt-get install v4l2loopback-dkms
  echo options v4l2loopback devices=1 video_nr=20 \
