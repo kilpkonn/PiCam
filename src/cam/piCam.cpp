@@ -54,7 +54,7 @@ void picam::PiCam::draw(Mat &img) {
         img = graphics::grayscaleBackground(img, highlights, 50);
     }
 
-    img = graphics::drawRectangles(img, highlights);
+    // img = graphics::drawRectangles(img, highlights);
 }
 
 void picam::PiCam::startServer() {
