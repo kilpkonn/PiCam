@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
 
     bool blur = false;
     bool grayscale = false;
+    bool rectangle = false;
     int port = 8080;
     int height = 720;
     int width = 1280;
@@ -52,6 +53,8 @@ int main(int argc, char** argv) {
             blur = true;
         } else if (arg == "-g" || arg == "--greyscale") {
             grayscale = true;
+        } else if (arg == "-r" || arg == "--rectangle") {
+          rectangle = true;
         }
     }
 

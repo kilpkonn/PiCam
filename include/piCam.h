@@ -23,9 +23,11 @@ public:
 
     void setFrameSize(const int& width, const int& height);
 
-    void setBlur(const bool& blur);
+    void setBlur(bool blur);
 
-    void setGrayscale(const bool& grayscale);
+    void setGrayscale(bool grayscale);
+
+    void setDrawRectangle(bool drawRectangle);
 
     virtual ~PiCam();
 
@@ -40,6 +42,7 @@ private:
 
     bool isBlur = false;
     bool isGrayscale = false;
+    bool isDrawRectangle = false;
 
     float frameHeight = 720;
     float frameWidth = 1280;

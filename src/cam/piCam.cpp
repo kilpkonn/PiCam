@@ -54,7 +54,9 @@ void picam::PiCam::draw(Mat &img) {
         img = graphics::grayscaleBackground(img, highlights, 50);
     }
 
-    // img = graphics::drawRectangles(img, highlights);
+    if (isDrawRectangle) {
+        img = graphics::drawRectangles(img, highlights);
+    }
 }
 
 void picam::PiCam::startServer() {
@@ -81,12 +83,16 @@ picam::PiCam::~PiCam() {
     stopServer();
 }
 
-void picam::PiCam::setBlur(const bool &blur) {
+void picam::PiCam::setBlur(bool blur) {
     this->isBlur = blur;
 }
 
-void picam::PiCam::setGrayscale(const bool &grayscale) {
+void picam::PiCam::setGrayscale(bool grayscale) {
     this->isGrayscale = grayscale;
+}
+
+void picam::PiCam::setDrawRectangle(bool drawRectangle) {
+  this->isDrawRectangle = drawRectangle;
 }
 
 void picam::PiCam::setFrameSize(const int &width, const int &height) {
