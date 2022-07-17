@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "../include/piCam.h"
+#include "../include/piCamFancy.h"
 
 inline bool isNumeric(const std::string &s) {
     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    picam::PiCam piCam(0, port);
+    picam::PiCamFancy piCam(0, port);
     piCam.setBlur(blur);
     piCam.setGrayscale(grayscale);
     piCam.setFrameSize(width, height);

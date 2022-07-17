@@ -5,37 +5,12 @@
 
 #include <opencv2/opencv.hpp>
 
+#include "vec2.h"
+
 #define FRAME_BUFFER_LENGTH 14
 #define MERGE_OVERLAPPING_AMOUNT 0.3
 
 namespace picam {
-
-    template<typename T>
-    struct Vector2D {
-        T x, y;
-
-        Vector2D(T x, T y) : x(x), y(y) {}
-
-        Vector2D operator+(Vector2D o) const {
-            return {x + o.x, y + o.y};
-        }
-
-        Vector2D operator-(Vector2D o) const {
-            return {x - o.x, y - o.y};
-        }
-
-        Vector2D operator+=(const Vector2D &o) {
-            x += o.x;
-            y += o.y;
-            return *this;
-        }
-
-        Vector2D operator-=(const Vector2D &o) {
-            x -= o.x;
-            y -= o.y;
-            return *this;
-        }
-    };
 
     struct Face {
         cv::Rect bounds;
