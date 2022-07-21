@@ -6,6 +6,7 @@
 #include <string>
 
 #include "../include/piCamFancy.h"
+#include "../include/piCamLite.h"
 
 inline bool isNumeric(const std::string &s) {
     return !s.empty() && std::all_of(s.begin(), s.end(), ::isdigit);
@@ -17,6 +18,7 @@ int main(int argc, char** argv) {
     bool blur = false;
     bool grayscale = false;
     bool rectangle = false;
+    bool lite = false;
     int port = 8080;
     int height = 720;
     int width = 1280;
@@ -55,17 +57,26 @@ int main(int argc, char** argv) {
             grayscale = true;
         } else if (arg == "-r" || arg == "--rectangle") {
           rectangle = true;
+        } else if (arg == "-l" || arg == "--lite") {
+          lite = true;
         }
     }
 
-    picam::PiCamFancy piCam(0, port);
-    piCam.setBlur(blur);
-    piCam.setGrayscale(grayscale);
-    piCam.setFrameSize(width, height);
+    if (lite) {
+        picam::PiCamLite piCam(0, port);
+        piCam.startServer();
+        piCam.run();
+        piCam.stopServer();
+    } else {
+        picam::PiCamFancy piCam(0, port);
+        piCam.setBlur(blur);
+        piCam.setGrayscale(grayscale);
+        piCam.setFrameSize(width, height);
 
-    piCam.startServer();
-    piCam.run();
-    piCam.stopServer();
+        piCam.startServer();
+        piCam.run();
+        piCam.stopServer();
+    }
 
     return 0;
 }
